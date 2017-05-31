@@ -18,3 +18,9 @@ python manage.py sqlmigrate webapps 0001
 
 シェル起動(Django APIにアクセスできる)
 python manage.py shell
+
+Adminユーザ作成
+python manage.py createsuperuser
+Username (leave blank to use 'satoru'): admin
+Email address: fugasat@gmail.com
+Password: adminpass
