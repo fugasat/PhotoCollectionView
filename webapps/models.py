@@ -22,3 +22,16 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+
+class Photo(models.Model):
+    uid = models.IntegerField()
+    date = models.DateTimeField()
+    favorites = models.IntegerField()
+    comments = models.IntegerField()
+    regression_error = models.FloatField()
+    features = models.TextField()
+    file = models.TextField()
+
+    def __str__(self):
+        return self.pid + ":" + self.date

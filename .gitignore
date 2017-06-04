@@ -1,6 +1,3 @@
-# Application Data Files
-photos/
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,5 +99,6 @@ ENV/
 
 # mypy
 .mypy_cache/
-workspace.xml
 db.sqlite3
+webapps/migrations
+webapps/static/photos
