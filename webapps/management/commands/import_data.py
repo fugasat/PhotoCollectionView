@@ -29,4 +29,6 @@ class Command(BaseCommand):
                     print("photo file not found.({0})".format(str(photo.uid)))
                     continue
 
+            photo.save()
+
         pass
