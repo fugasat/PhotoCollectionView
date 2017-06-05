@@ -2,12 +2,12 @@ from django.shortcuts import get_object_or_404, render
 from django.http import Http404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from .models import Choice, Question
+from .models import Choice, Question, Photo
 
 
 def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    context = {'latest_question_list': latest_question_list}
+    photo_list = Photo.objects.order_by('-regression_error')[:50]
+    context = {'photo_list': photo_list}
     return render(request, 'index.html', context)
 
 

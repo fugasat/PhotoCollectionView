@@ -2,12 +2,11 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
 
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{% url 'webapps:detail' question.id %}">{{ question.question_text }}</a></li>
+{% if photo_list %}
+    {% for photo in photo_list %}
+        <img src="{% static 'photos' %}/{{photo.file_path}}"><br/>
+        <!--<li>{{ photo.file_path }}</li>-->
     {% endfor %}
-    </ul>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
