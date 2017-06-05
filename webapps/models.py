@@ -31,7 +31,7 @@ class Photo(models.Model):
     comments = models.IntegerField()
     regression_error = models.FloatField()
     features = models.TextField()
-    file = models.TextField()
+    file_path = models.TextField()
 
     def __str__(self):
         return self.pid + ":" + self.date
