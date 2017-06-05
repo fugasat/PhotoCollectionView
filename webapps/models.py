@@ -26,12 +26,12 @@ class Choice(models.Model):
 
 class Photo(models.Model):
     uid = models.IntegerField()
-    date = models.DateTimeField()
-    favorites = models.IntegerField()
-    comments = models.IntegerField()
-    regression_error = models.FloatField()
-    features = models.TextField()
-    file_path = models.TextField()
+    date = models.DateTimeField(default=timezone.now)
+    favorites = models.IntegerField(default=0)
+    comments = models.IntegerField(default=0)
+    regression_error = models.FloatField(default=0)
+    features = models.TextField(default="")
+    file_path = models.TextField(default="")
 
     def __str__(self):
         return self.pid + ":" + self.date

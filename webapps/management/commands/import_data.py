@@ -15,8 +15,7 @@ class Command(BaseCommand):
         photo_root_path = "{0}/webapps/static/photos".format(root_path)
 
         for i, row in df.iterrows():
-            photo = Photo()
-            photo.uid = row["ID"]
+            photo, created = Photo.objects.get_or_create(uid=row["ID"])
             photo.regression_error = row["回帰誤差"]
             photo.date = datetime.strptime(row["日付"], '%Y-%m-%d')
             photo.favorites = row["f"]
