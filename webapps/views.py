@@ -11,12 +11,12 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def detail(request, question_id):
+def detail(request, photo_uid):
     try:
-        question = Question.objects.get(pk=question_id)
+        photo = Photo.objects.get(uid=photo_uid)
     except Question.DoesNotExist:
-        raise Http404("Question does not exist")
-    return render(request, 'detail.html', {'question': question})
+        raise Http404("Photo does not exist")
+    return render(request, 'detail.html', {'photo': photo})
 
 
 def vote(request, question_id):
