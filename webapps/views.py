@@ -2,12 +2,16 @@ from django.shortcuts import get_object_or_404, render
 from django.http import Http404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+
 from .models import Choice, Question, Photo
+from .features import Features
+
+__features = Features("instagram_data_all.csv")
 
 
 def index(request):
     photo_list = Photo.objects.order_by('-regression_error')[:50]
-    context = {'photo_list': photo_list}
+    context = {'photo_list': photo_list, 'features': __features}
     return render(request, 'index.html', context)
 
 

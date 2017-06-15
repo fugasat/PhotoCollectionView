@@ -34,4 +34,4 @@ class Photo(models.Model):
     file_path = models.TextField(default="")
 
     def __str__(self):
-        return self.pid + ":" + self.date
+        return str(self.uid) + ":" + str(self.date)
