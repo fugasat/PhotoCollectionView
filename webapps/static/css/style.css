@@ -1,6 +1,4 @@
-li a {
-    color: green;
-}
-
-body {
+.thumbnail {
+    width: 100%;
+    height: auto;
 }

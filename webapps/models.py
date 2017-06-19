@@ -34,4 +34,10 @@ class Photo(models.Model):
     file_path = models.TextField(default="")
 
     def __str__(self):
-        return str(self.uid) + ":" + str(self.date)
+        return str(self.pk) + ":" + str(self.uid) + ", " + str(self.date)
+
+    def score(self):
+        return int(self.regression_error)
+
+    def date_label(self):
+        return self.date.strftime("%Y/%m/%d")
