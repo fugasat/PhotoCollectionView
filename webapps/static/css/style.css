@@ -8,14 +8,34 @@
     background-size: contain;
 }
 
-.photo_row {
+.photo_wrapper {
+    position: relative;
     width: 100%;
     height: 256px;
+    <!--
     background-color: #99cc00;
+    -->
 }
 
-.photo_a {
-    width: 50%;
-    height: 50%;
+.photo_thumbnail {
+    width: 100%;
+    height: 100%;
+    <!--
     background-color: #66aa00;
+    -->
+}
+
+.photo_info {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 4px;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }

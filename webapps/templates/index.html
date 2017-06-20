@@ -24,28 +24,30 @@
                 {% for photo in photo_list %}
                     <div class="col-sm-3 bg-info">
                         <div class="row">
-                            <div class="col-sm-4 bg-info">
-                                <span>
-                                    {{photo.date_label}}
-                                </span>
-                            </div>
-                            <div class="col-sm-4 bg-info">
-                                <span>
-                                    Favolite:{{photo.favorites}}
-                                </span>
-                            </div>
-                            <div class="col-sm-4 bg-info">
-                                <span>
-                                    Score:{{photo.score}}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="photo_row">
-                                <a class="photo_a" href="{% url 'webapps:detail' photo.uid %}">
-                                    <div class="thumbnail" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                            <div class="photo_wrapper">
+                                <div class="photo_thumbnail">
+                                    <a href="{% url 'webapps:detail' photo.uid %}">
+                                        <div class="thumbnail" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="photo_info">
+                                    <div class="col-sm-4">
+                                        <span>
+                                            {{photo.date_label}}
+                                        </span>
                                     </div>
-                                </a>
+                                    <div class="col-sm-4">
+                                        <span>
+                                            Favolite:{{photo.favorites}}
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>
+                                            Score:{{photo.score}}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
