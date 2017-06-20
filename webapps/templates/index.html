@@ -26,7 +26,10 @@
                         <div class="row">
                             <div class="photo_wrapper">
                                 <div class="photo_thumbnail">
+                                    <!--
                                     <a href="{% url 'webapps:detail' photo.uid %}">
+                                    -->
+                                    <a href="#" data-toggle="modal" data-target="#myModal">
                                         <div class="thumbnail" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
                                         </div>
                                     </a>
@@ -56,9 +59,22 @@
                 <p>No Photo are available.</p>
             {% endif %}
         </div>
-
     </div>
 
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Modal タイトル</h4>
+          </div>
+          <div class="modal-body">Modal内容</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+           </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
