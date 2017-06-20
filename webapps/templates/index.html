@@ -41,9 +41,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 bg-info">
-                                <a href="{% url 'webapps:detail' photo.uid %}">
-                                    <img class="thumbnail" src="{% static 'photos' %}/{{photo.file_path}}" />
+                            <div class="photo_row">
+                                <a class="photo_a" href="{% url 'webapps:detail' photo.uid %}">
+                                    <div class="thumbnail" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                                    </div>
                                 </a>
                             </div>
                         </div>
