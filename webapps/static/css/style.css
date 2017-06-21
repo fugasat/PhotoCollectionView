@@ -8,6 +8,25 @@
     background-size: contain;
 }
 
+.modal_thumbnail_table {
+    table-layout:fixed;
+}
+
+.modal_thumbnail_row {
+    width: 200px;
+    height: 200px;
+}
+
+.modal_thumbnail {
+    display: inline-block;
+    background-color: rgba(0,0,0,0);
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 200px;
+    background-size: contain;
+}
+
 .photo_wrapper {
     position: relative;
     width: 100%;

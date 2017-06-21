@@ -68,7 +68,48 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Modal タイトル</h4>
           </div>
-          <div class="modal-body">Modal内容</div>
+          <div class="modal-body">
+              <h5 class="text-center">Hello. Some text here.</h5>
+              <div class="table-responsive">
+                  <table class="table table-striped modal_thumbnail_table" id="tblGrid">
+                      <!--
+                      <thead id="tblHead">
+                          <tr>
+                              <th>test</th>
+                          </tr>
+                      </thead>
+                      -->
+                    <tbody>
+                        <tr>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
            </div>
@@ -77,7 +118,3 @@
     </div>
   </body>
 </html>
-
-<!--
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
--->
