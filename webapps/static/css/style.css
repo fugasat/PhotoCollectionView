@@ -8,6 +8,10 @@
     background-size: contain;
 }
 
+.modal_thumbnail_content {
+    width: 90%;
+}
+
 .modal_thumbnail_table {
     table-layout:fixed;
 }

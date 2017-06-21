@@ -15,7 +15,7 @@
     <![endif]-->
   </head>
   <body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'lib/js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'lib/js/bootstrap.min.js' %}"></script>
 
     <div class="container bg-info">
@@ -62,7 +62,7 @@
     </div>
 
     <div class="modal fade" id="myModal">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal_thumbnail_content">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -72,15 +72,139 @@
               <h5 class="text-center">Hello. Some text here.</h5>
               <div class="table-responsive">
                   <table class="table table-striped modal_thumbnail_table" id="tblGrid">
-                      <!--
-                      <thead id="tblHead">
-                          <tr>
-                              <th>test</th>
-                          </tr>
-                      </thead>
-                      -->
                     <tbody>
                         <tr>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+
+
+
+              <div class="table-responsive">
+                  <table class="table table-striped modal_thumbnail_table" id="tblGrid">
+                    <tbody>
+                        <tr>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+              <div class="table-responsive">
+                  <table class="table table-striped modal_thumbnail_table" id="tblGrid">
+                    <tbody>
+                        <tr>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+              <div class="table-responsive">
+                  <table class="table table-striped modal_thumbnail_table" id="tblGrid">
+                    <tbody>
+                        <tr>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
+                            <td class="modal_thumbnail_row">
+                                 <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
+                                 </div>
+                            </td>
                             <td class="modal_thumbnail_row">
                                  <div class="thumbnail" style="background-image: url('{% static 'photos' %}/1000.jpg')">
                                  </div>
