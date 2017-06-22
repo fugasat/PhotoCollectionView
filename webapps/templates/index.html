@@ -17,6 +17,7 @@
   <body>
     <script src="{% static 'lib/js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'lib/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/photo.js' %}"></script>
 
     <div class="container bg-info">
         <div class="row">
@@ -26,10 +27,7 @@
                         <div class="row">
                             <div class="photo_wrapper">
                                 <div class="photo_thumbnail">
-                                    <!--
-                                    <a href="{% url 'webapps:detail' photo.uid %}">
-                                    -->
-                                    <a href="#" data-toggle="modal" data-target="#myModal">
+                                    <a href="#" class="a_photo">
                                         <div class="thumbnail" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
                                         </div>
                                     </a>
