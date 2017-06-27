@@ -67,12 +67,26 @@
             <h4 class="modal-title">Modal タイトル</h4>
           </div>
           <div class="modal-body">
-            <div class="photo_view">
-                <div class="thumbnail" id="modal_body_photo">
-                </div>
-            </div>
-            <div id="modal_body_photo_relation">
-            </div>
+              <div class="container-fluid">
+                  <div class="row">
+                      <!-- Selcted photo -->
+                      <div class="col-sm-5 photo_view">
+                          <div class="thumbnail" id="modal_body_photo">
+                          </div>
+                      </div>
+                      <!-- Main relation -->
+                      <div class="col-sm-7">
+                          <div class="row photo_view" id="modal_body_photo_main_relation">
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Sub relation -->
+                  <div class="row">
+                    <div id="modal_body_photo_sub_relation">
+                    </div>
+                  </div>
+              </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>

@@ -31,6 +31,10 @@
     background-size: contain;
 }
 
+.modal_main_thumbnail_row {
+    height: 50%;
+}
+
 .photo_wrapper {
     position: relative;
     width: 100%;
@@ -38,8 +42,7 @@
 }
 
 .photo_view {
-    width: 500px;
-    height: 500px;
+    height: 400px;
 }
 
 .photo_thumbnail {
