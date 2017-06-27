@@ -1,5 +1,5 @@
 $(function(){
-    $(".a_photo").click(function(){
+    $(".cell_photo").click(function(){
         var file_path = $(this).data('file-path');
         var img_url = '"/static/photos/' + file_path + '"'
 
@@ -22,7 +22,7 @@ function create_main_relation_table(parent_id) {
     for (var i = 0; i < 6; i++) {
         var file_path = "1000.jpg";
         var img_url = '"/static/photos/' + file_path + '"';
-        var item = "<div class='col-sm-4 modal_main_thumbnail_row'><div class='thumbnail' style='background-image: url(" + img_url + ")'></div></div>";
+        var item = "<div class='col-sm-4 modal_thumbnail_main_row'><div class='thumbnail' style='background-image: url(" + img_url + ")'></div></div>";
         $(parent_id).append(item);
     }
 }
@@ -43,7 +43,7 @@ function create_sub_relation_table(parent_id, file_path) {
 function get_sub_relation_table_body(file_path) {
     var table_header =
         "<div class='table-responsive'>" +
-            "<table class='table table-striped modal_thumbnail_table'>" +
+            "<table class='table table-striped modal_thumbnail_sub_table'>" +
                 "<tbody>" +
                     "<tr>";
     var table_footer =
@@ -60,7 +60,7 @@ function get_sub_relation_table_data(file_path) {
     for (var i = 0; i < 10; i++) {
         var img_url = '"/static/photos/' + file_path + '"'
         table_data +=
-            "<td class='modal_thumbnail_row'>" +
+            "<td class='modal_thumbnail_sub_row'>" +
                 "<div class='thumbnail' style='background-image: url(" + img_url + ")'></div>" +
             "</td>";
     }

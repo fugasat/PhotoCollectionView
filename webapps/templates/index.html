@@ -26,12 +26,8 @@
                     <div class="col-sm-3 bg-info">
                         <div class="row">
                             <div class="photo_wrapper">
-                                <div class="photo_thumbnail">
-                                    <a href="#" class="a_photo" data-file-path="{{photo.file_path}}">
-                                        <div class="thumbnail" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
-                                        </div>
-                                    </a>
-                                </div>
+                                <a href="#" class="cell_photo thumbnail" data-file-path="{{photo.file_path}}" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                                </a>
                                 <div class="photo_info">
                                     <div class="col-sm-4">
                                         <span>
@@ -68,15 +64,15 @@
           </div>
           <div class="modal-body">
               <div class="container-fluid">
-                  <div class="row">
+                  <div class="row modal_thumbnail_photo">
                       <!-- Selcted photo -->
-                      <div class="col-sm-5 photo_view">
+                      <div class="col-sm-5">
                           <div class="thumbnail" id="modal_body_photo">
                           </div>
                       </div>
                       <!-- Main relation -->
                       <div class="col-sm-7">
-                          <div class="row photo_view" id="modal_body_photo_main_relation">
+                          <div class="row" id="modal_body_photo_main_relation">
                           </div>
                       </div>
                   </div>

@@ -1,58 +1,30 @@
+/*
+    common
+*/
+div {
+    height: inherit;
+}
 .thumbnail {
     display: inline-block;
     background-color: rgba(0,0,0,0);
     background-position: center center;
     background-repeat: no-repeat;
+    background-size: contain;
     width: 100%;
     height: 100%;
-    background-size: contain;
 }
 
-.modal_thumbnail_content {
-    width: 90%;
-}
 
-.modal_thumbnail_table {
-    table-layout:fixed;
-}
-
-.modal_thumbnail_row {
-    width: 200px;
-    height: 200px;
-}
-
-.modal_thumbnail_img {
-    display: inline-block;
-    background-color: rgba(0,0,0,0);
-    background-position: center center;
-    background-repeat: no-repeat;
-    width: 200px;
-    height: 200px;
-    background-size: contain;
-}
-
-.modal_main_thumbnail_row {
-    height: 50%;
-}
-
+/*
+    main
+*/
 .photo_wrapper {
     position: relative;
-    width: 100%;
     height: 256px;
 }
-
-.photo_view {
-    height: 400px;
-}
-
-.photo_thumbnail {
-    width: 100%;
-    height: 100%;
-}
-
 .photo_info {
     position: absolute;
-    width: 100%;
+    height: 28px;
     bottom: 0px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
@@ -63,4 +35,32 @@
     -o-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+
+/*
+    modal
+*/
+.modal_thumbnail_content {
+    width: 90%;
+}
+
+/* selected photo */
+/* relation(common) */
+.modal_thumbnail_photo {
+    height: 400px;
+}
+
+/* main relation */
+.modal_thumbnail_main_row {
+    height: 50%; /* 選択画像の表示領域の半分の高さで表示 */
+}
+
+/* sub relation */
+.modal_thumbnail_sub_table {
+    table-layout:fixed;
+}
+.modal_thumbnail_sub_row {
+    width: 200px;
+    height: 200px;
 }
