@@ -4,14 +4,12 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 from .models import Choice, Question, Photo
-from .features import Features
 
-__features = Features("instagram_data_all.csv")
 
 
 def index(request):
     photo_list = Photo.objects.order_by('-regression_error')[:50]
-    context = {'photo_list': photo_list, 'features': __features}
+    context = {'photo_list': photo_list}
     return render(request, 'index.html', context)
 
 
