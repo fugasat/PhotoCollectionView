@@ -26,7 +26,7 @@
                     <div class="col-sm-3 bg-info">
                         <div class="row">
                             <div class="photo_wrapper">
-                                <a href="#" class="cell_photo thumbnail" data-file-path="{{photo.file_path}}" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                                <a href="#" class="cell_photo thumbnail" data-photo-uid="{{photo.uid}}" data-file-path="{{photo.file_path}}" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
                                 </a>
                                 <div class="photo_info">
                                     <div class="col-sm-4">
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_thumbnail">
+    <div class="modal fade" id="modal_thumbnail" data-photo-uid="-1">
       <div class="modal-dialog modal_thumbnail_content">
         <div class="modal-content">
           <div class="modal-header">

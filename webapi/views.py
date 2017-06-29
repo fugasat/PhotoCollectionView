@@ -17,6 +17,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def get_main_relation(request, uid):
+    print("view photo : {0}".format(str(uid)))
     if request.method == 'GET':
-        data = [1000, 1001, 1002, 1003, 1004]
+        data = ["1000.jpg", "1001.jpg", "1002.jpg", "1003.jpg", "1004.jpg"]
         return Response(data)

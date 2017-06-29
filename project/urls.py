@@ -19,7 +19,7 @@ from webapi import urls as webapi_urls
 
 urlpatterns = [
     url(r'^webapps/', include('webapps.urls')),
-    url(r'^webapi/', include(webapi_urls)),
-    url(r'^webapi/', include(webapi_urls.router.urls)),
+    url(r'^webapps/', include(webapi_urls)),
+    url(r'^webapps/', include(webapi_urls.router.urls)),
     url(r'^admin/', admin.site.urls),
 ]

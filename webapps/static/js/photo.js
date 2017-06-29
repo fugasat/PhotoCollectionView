@@ -1,6 +1,7 @@
 $(function(){
     $(".cell_photo").click(function(){
-        var file_path = $(this).data('file-path');
+        $("#modal_thumbnail").data("photo-uid", $(this).data("photo-uid"));
+        var file_path = $(this).data("file-path");
         var img_url = '"/static/photos/' + file_path + '"'
 
         $('#modal_body_photo').css('background-image', 'url(' + img_url + ')');
@@ -8,10 +9,27 @@ $(function(){
         create_main_relation_table("#modal_body_photo_main_relation");
         create_sub_relation_table("#modal_body_photo_sub_relation", file_path);
 
-        $('#modal_thumbnail').modal('show');
+        $("#modal_thumbnail").modal("show");
 
         return false;
     });
+
+    $('#modal_thumbnail').on('shown.bs.modal', function (event) {
+        let photo_uid = $(this).data("photo-uid");
+        $.ajax({
+            url: "main_relation/" + photo_uid,
+
+        }).done(function(data){
+            for (let i=0; i < data.length; i++) {
+                let file_path = data[i];
+                let img_url = '"/static/photos/' + file_path + '"';
+                $("#main_relation_" + i).css('background-image', 'url(' + img_url + ')');
+            }
+
+        }).fail(function(data){
+            alert('error!!! : ' + data);
+        });
+	});
 });
 
 //
@@ -20,9 +38,8 @@ $(function(){
 function create_main_relation_table(parent_id) {
     $(parent_id).empty();
     for (var i = 0; i < 6; i++) {
-        var file_path = "1000.jpg";
-        var img_url = '"/static/photos/' + file_path + '"';
-        var item = "<div class='col-sm-4 modal_thumbnail_main_row'><div class='thumbnail' style='background-image: url(" + img_url + ")'></div></div>";
+        var element_id = "main_relation_" + i;
+        var item = "<div class='col-sm-4 modal_thumbnail_main_row'><div id='" + element_id + "' class='thumbnail'></div></div>";
         $(parent_id).append(item);
     }
 }
