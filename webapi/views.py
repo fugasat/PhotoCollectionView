@@ -19,5 +19,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
 def get_main_relation(request, uid):
     print("view photo : {0}".format(str(uid)))
     if request.method == 'GET':
-        data = ["1000.jpg", "1001.jpg", "1002.jpg", "1003.jpg", "1004.jpg"]
+        df_selected = __features.df[0:6]
+        uids = list(df_selected["ID"])
+        data = Photo.objects.filter(uid__in=uids).values()
         return Response(data)

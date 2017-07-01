@@ -21,7 +21,8 @@ $(function(){
 
         }).done(function(data){
             for (let i=0; i < data.length; i++) {
-                let file_path = data[i];
+                let item = data[i]
+                let file_path = item["file_path"];
                 let img_url = '"/static/photos/' + file_path + '"';
                 $("#main_relation_" + i).css('background-image', 'url(' + img_url + ')');
             }
