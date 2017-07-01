@@ -66,3 +66,7 @@ def test_get_model():
 def test_get_model_values():
     assert ["14", "dd51", "nimotu"] == features.get_model_values(1267)
     assert ["ef58", "old_pc"] == features.get_model_values(1384)
+
+
+def test_similarity():
+    uids = features.get_similarity_uids(1395)
