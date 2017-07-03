@@ -17,11 +17,28 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def get_main_relation(request, uid):
-    print("view photo : {0}".format(str(uid)))
+    print("main relation : {0}".format(str(uid)))
     uid = int(uid)
     if request.method == 'GET':
         # 類似度が高いデータを6個取得
         uids = __features.get_similarity_uids(uid)[:6]
+        datas = Photo.objects.filter(uid__in=uids).values()
+        # 正しい順番でソート
+        data = []
+        for s_uid in uids:
+            for item in datas:
+                if item["uid"] == s_uid:
+                    data.append(item)
+        return Response(data)
+
+
+@api_view(['GET'])
+def get_model_relation(request, uid):
+    print("model relation : {0}".format(str(uid)))
+    uid = int(uid)
+    if request.method == 'GET':
+        # 類似度が高いデータを6個取得
+        uids = __features.get_model_similarity_uids(uid)[:10]
         datas = Photo.objects.filter(uid__in=uids).values()
         # 正しい順番でソート
         data = []

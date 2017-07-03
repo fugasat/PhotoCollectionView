@@ -30,6 +30,22 @@ $(function(){
         }).fail(function(data){
             alert('error!!! : ' + data);
         });
+
+        $.ajax({
+            url: "model_relation/" + photo_uid,
+
+        }).done(function(data){
+            for (let i=0; i < data.length; i++) {
+                let item = data[i]
+                let file_path = item["file_path"];
+                let img_url = '"/static/photos/' + file_path + '"';
+                $("#sub_relation_0_" + i).css('background-image', 'url(' + img_url + ')');
+            }
+
+        }).fail(function(data){
+            alert('error!!! : ' + data);
+        });
+
 	});
 });
 
@@ -50,15 +66,20 @@ function create_main_relation_table(parent_id) {
 //
 function create_sub_relation_table(parent_id, file_path) {
     $(parent_id).empty();
-    $(parent_id).append("<h5 class='text-center'>Hello. Some text here.</h5>");
-    $(parent_id).append(get_sub_relation_table_body("1000.jpg"));
-    $(parent_id).append(get_sub_relation_table_body("1001.jpg"));
-    $(parent_id).append(get_sub_relation_table_body("1002.jpg"));
-    $(parent_id).append(get_sub_relation_table_body("1003.jpg"));
-    $(parent_id).append(get_sub_relation_table_body("1004.jpg"));
+    $(parent_id).append("<hr />");
+    $(parent_id).append("<h5 class='text-center'>全体</h5>");
+    $(parent_id).append(get_sub_relation_table_body("1004.jpg", 0));
+    $(parent_id).append("<h5 class='text-center'>車両</h5>");
+    $(parent_id).append(get_sub_relation_table_body("1000.jpg", 1));
+    $(parent_id).append("<h5 class='text-center'>風景</h5>");
+    $(parent_id).append(get_sub_relation_table_body("1001.jpg", 2));
+    $(parent_id).append("<h5 class='text-center'>カメラアングル</h5>");
+    $(parent_id).append(get_sub_relation_table_body("1002.jpg", 3));
+    $(parent_id).append("<h5 class='text-center'>地域</h5>");
+    $(parent_id).append(get_sub_relation_table_body("1003.jpg", 4));
 }
 
-function get_sub_relation_table_body(file_path) {
+function get_sub_relation_table_body(file_path, index) {
     var table_header =
         "<div class='table-responsive'>" +
             "<table class='table table-striped modal_thumbnail_sub_table'>" +
@@ -69,18 +90,22 @@ function get_sub_relation_table_body(file_path) {
                 "</tbody>" +
             "</table>" +
         "</div>";
-    var table_data = get_sub_relation_table_data(file_path)
+    var table_data = get_sub_relation_table_data(file_path, index)
     return table_header + table_data + table_footer;
 }
 
-function get_sub_relation_table_data(file_path) {
+function get_sub_relation_table_data(file_path, index) {
     var table_data = ""
     for (var i = 0; i < 10; i++) {
+        var element_id = "sub_relation_" + index + "_" + i;
+
         var img_url = '"/static/photos/' + file_path + '"'
         table_data +=
             "<td class='modal_thumbnail_sub_row'>" +
-                "<div class='thumbnail' style='background-image: url(" + img_url + ")'></div>" +
+                //"<div class='thumbnail' style='background-image: url(" + img_url + ")'></div>" +
+                "<div id='" + element_id + "' class='thumbnail'></div>" +
             "</td>";
     }
+
     return table_data;
 }

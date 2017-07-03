@@ -8,7 +8,7 @@ from .models import Choice, Question, Photo
 
 
 def index(request):
-    photo_list = Photo.objects.order_by('-regression_error')[:50]
+    photo_list = Photo.objects.order_by('-regression_error')
     context = {'photo_list': photo_list}
     return render(request, 'index.html', context)
 
