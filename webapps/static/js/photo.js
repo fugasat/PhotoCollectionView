@@ -16,11 +16,12 @@ $(function(){
 
     $('#modal_thumbnail').on('shown.bs.modal', function (event) {
         let photo_uid = $(this).data("photo-uid");
-        $.ajax({
-            url: "main_relation/" + photo_uid,
 
+        /*
+        $.ajax({
+            url: "relation/" + photo_uid,
         }).done(function(data){
-            for (let i=0; i < data.length; i++) {
+            for (let i=0; i < 6; i++) {
                 let item = data[i]
                 let file_path = item["file_path"];
                 let img_url = '"/static/photos/' + file_path + '"';
@@ -30,10 +31,10 @@ $(function(){
         }).fail(function(data){
             alert('error!!! : ' + data);
         });
+        */
 
         $.ajax({
-            url: "model_relation/" + photo_uid,
-
+            url: "relation/" + photo_uid + "/0/" ,
         }).done(function(data){
             for (let i=0; i < data.length; i++) {
                 let item = data[i]
@@ -41,7 +42,32 @@ $(function(){
                 let img_url = '"/static/photos/' + file_path + '"';
                 $("#sub_relation_0_" + i).css('background-image', 'url(' + img_url + ')');
             }
+        }).fail(function(data){
+            alert('error!!! : ' + data);
+        });
 
+        $.ajax({
+            url: "relation/" + photo_uid + "/5/" ,
+        }).done(function(data){
+            for (let i=0; i < data.length; i++) {
+                let item = data[i]
+                let file_path = item["file_path"];
+                let img_url = '"/static/photos/' + file_path + '"';
+                $("#sub_relation_1_" + i).css('background-image', 'url(' + img_url + ')');
+            }
+        }).fail(function(data){
+            alert('error!!! : ' + data);
+        });
+
+        $.ajax({
+            url: "relation/" + photo_uid + "/3/" ,
+        }).done(function(data){
+            for (let i=0; i < data.length; i++) {
+                let item = data[i]
+                let file_path = item["file_path"];
+                let img_url = '"/static/photos/' + file_path + '"';
+                $("#sub_relation_2_" + i).css('background-image', 'url(' + img_url + ')');
+            }
         }).fail(function(data){
             alert('error!!! : ' + data);
         });

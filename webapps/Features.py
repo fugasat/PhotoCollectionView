@@ -4,7 +4,31 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import StandardScaler
 
 
+class Const():
+
+    @staticmethod
+    def type_angle():
+        return 1
+
+    @staticmethod
+    def type_rail():
+        return 2
+
+    @staticmethod
+    def type_scene():
+        return 3
+
+    @staticmethod
+    def type_area():
+        return 4
+
+    @staticmethod
+    def type_model():
+        return 5
+
+
 class Features():
+
     def __init__(self, csv_path):
         self.df = pd.read_csv(csv_path)
 
@@ -91,40 +115,33 @@ class Features():
         list_values = list(array_values)
         return list_values
 
-    def get_similarity_uids(self, uid):
-        # 各写真ごとのコサイン類似度を計算
+    def get_relation_uids(self, uid, relation_type=None):
+        print("uid={0}, relation type={1}".format(uid, relation_type))
+
         df_feature = self.df.loc[:, "正面":]
-        array = df_feature.as_matrix()
-        cs_array = cosine_similarity(array, array)
 
-        # uidの配列をrow/column名にして"コサイン類似度"DataFrameを生成
-        row_uid = self.df["ID"].as_matrix()
-        df_cs = pd.DataFrame(cs_array, index=row_uid, columns=row_uid)
+        # 特定の特徴量を強調させる
+        uid = int(uid)
+        relation_type = int(relation_type)
+        if relation_type is not None:
+            current_value = self.get_model_values(uid)[0]
+            rtype = Const.type_model()
+            if relation_type == Const.type_model():
+                df_feature.loc[:, "183":] = df_feature.loc[:, "183":] * 3
+                df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
+                df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 1.5
+            elif relation_type == Const.type_scene():
+                current_value = self.get_model_values(uid)[0]
+                df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 2
 
-        # ターゲットの行indexを取得
-        # (ターゲットをdrop、類似度を降順でソート)
-        row_cs_target = df_cs.loc[uid].drop(uid).sort_values(ascending=False)
-        return row_cs_target.index.values;
+            # 正規化(z-score)
+            # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
+            # 正規化(min-max)
+            f_max = df_feature.max().max()
+            f_min = df_feature.min().min()
+            df_feature = (df_feature - f_min) / (f_max - f_min)
 
-    def get_model_similarity_uids(self, uid):
         # 各写真ごとのコサイン類似度を計算
-        df_feature = self.df.loc[:, "正面":]
-        df_feature.loc[:, "183":] = df_feature.loc[:, "183":] * 3  # 特定の特徴量を強調させる
-
-        # 正規化(z-score)
-        #df_feature = (df_feature - df_feature.mean()) / df_feature.std()
-        # 正規化(min-max)
-        f_max = df_feature.max().max()
-        f_min = df_feature.min().min()
-        df_feature = (df_feature - f_min) / (f_max - f_min)
-
-        """
-        # 正規化(z-score)
-        sc = StandardScaler()
-        sc.fit(df_feature)
-        temp = sc.transform(df_feature)
-        """
-
         array = df_feature.as_matrix()
         cs_array = cosine_similarity(array, array)
 
