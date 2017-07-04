@@ -33,45 +33,27 @@ $(function(){
         });
         */
 
-        $.ajax({
-            url: "relation/" + photo_uid + "/0/" ,
-        }).done(function(data){
-            for (let i=0; i < data.length; i++) {
-                let item = data[i]
-                let file_path = item["file_path"];
-                let img_url = '"/static/photos/' + file_path + '"';
-                $("#sub_relation_0_" + i).css('background-image', 'url(' + img_url + ')');
-            }
-        }).fail(function(data){
-            alert('error!!! : ' + data);
-        });
+        let relation_param = [
+            {relation_type: 0, index: 0},
+            {relation_type: 5, index: 1},
+            {relation_type: 3, index: 2},
+        ];
 
-        $.ajax({
-            url: "relation/" + photo_uid + "/5/" ,
-        }).done(function(data){
-            for (let i=0; i < data.length; i++) {
-                let item = data[i]
-                let file_path = item["file_path"];
-                let img_url = '"/static/photos/' + file_path + '"';
-                $("#sub_relation_1_" + i).css('background-image', 'url(' + img_url + ')');
-            }
-        }).fail(function(data){
-            alert('error!!! : ' + data);
-        });
-
-        $.ajax({
-            url: "relation/" + photo_uid + "/3/" ,
-        }).done(function(data){
-            for (let i=0; i < data.length; i++) {
-                let item = data[i]
-                let file_path = item["file_path"];
-                let img_url = '"/static/photos/' + file_path + '"';
-                $("#sub_relation_2_" + i).css('background-image', 'url(' + img_url + ')');
-            }
-        }).fail(function(data){
-            alert('error!!! : ' + data);
-        });
-
+        for (let index in relation_param) {
+            let param = relation_param[index];
+            $.ajax({
+                url: "relation/" + photo_uid + "/" + param.relation_type + "/" ,
+            }).done(function(data){
+                for (let i=0; i < data.length; i++) {
+                    let item = data[i]
+                    let file_path = item["file_path"];
+                    let img_url = '"/static/photos/' + file_path + '"';
+                    $("#sub_relation_" + param.index + "_" + i).css('background-image', 'url(' + img_url + ')');
+                }
+            }).fail(function(data){
+                alert('error!!! : ' + data);
+            });
+        }
 	});
 });
 
