@@ -2,105 +2,107 @@
 {% load static %}
 {% csrf_token %}
 <html lang="ja">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>タイトル</title>
-    <link href="{% static 'lib/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <script src="{% static 'lib/js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static 'lib/js/bootstrap.min.js' %}"></script>
-    <script src="{% static '/js/photo.js' %}"></script>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>タイトル</title>
+<link href="{% static 'lib/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
 
-    <div class="container bg-info">
-        <div class="row">
-            {% if photo_list %}
-                {% for photo in photo_list %}
-                    <div class="col-sm-3 bg-info">
-                        <div class="row">
-                            <div class="photo_wrapper">
-                                <a href="#" class="cell_photo thumbnail" data-photo-uid="{{photo.uid}}" data-file-path="{{photo.file_path}}" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
-                                </a>
-                                <div class="photo_info">
-                                    <div class="col-sm-4">
-                                        <span>
-                                            {{photo.date_label}}
-                                        </span>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <span>
-                                            Favolite:{{photo.favorites}}
-                                        </span>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <span>
-                                            Score:{{photo.score}}
-                                        </span>
-                                    </div>
+<body>
+
+<script src="{% static 'lib/js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'lib/js/bootstrap.min.js' %}"></script>
+<script src="{% static '/js/photo.js' %}"></script>
+
+<div class="container bg-info">
+    <div class="row">
+        {% if photo_list %}
+            {% for photo in photo_list %}
+                <div class="col-sm-3 bg-info">
+                    <div class="row">
+                        <div class="photo_wrapper">
+                            <a href="#" class="cell_photo thumbnail" data-photo-uid="{{photo.uid}}" data-file-path="{{photo.file_path}}" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                            </a>
+                            <div class="photo_info">
+                                <div class="col-sm-3">
+                                    <span>
+                                        ID:{{photo.uid}}
+                                    </span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span>
+                                        {{photo.date_label}}
+                                    </span>
+                                </div>
+                                <div class="col-sm-5">
+                                    <span>
+                                        Score:{{photo.score}}({{photo.favorites}})
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            {% else %}
-                <p>No Photo are available.</p>
-            {% endif %}
-        </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No Photo are available.</p>
+        {% endif %}
     </div>
+</div>
 
-    <div class="modal fade" id="modal_thumbnail" data-photo-uid="-1">
-      <div class="modal-dialog modal_thumbnail_content">
-        <div class="modal-content">
-          <div class="modal-header">
+<div class="modal fade" id="modal_thumbnail" data-photo-uid="-1">
+    <div class="modal-dialog modal_thumbnail_content">
+    <div class="modal-content">
+        <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Modal タイトル</h4>
-          </div>
-          <div class="modal-body">
-              <div class="container-fluid">
-                  <div class="row modal_thumbnail_photo">
-                      <!-- Selcted photo -->
-                      <div class="col-sm-5">
-                          <div class="thumbnail" id="modal_body_photo">
-                          </div>
-                      </div>
-                      <!-- Main relation -->
-                      <div class="col-sm-7">
-                          <div class="row" id="modal_body_photo_main_relation">
-                          </div>
-                      </div>
-                  </div>
-
-                  <!-- Sub relation -->
-                  <div class="row">
-                      <ul class="nav nav-tabs">
-                          <li class="active"><a href="#tab0" data-toggle="tab">全体</a></li>
-                          <li><a href="#tab1" data-toggle="tab">車両(<span id="info_tab1"></span>)</a></li>
-                          <li><a href="#tab2" data-toggle="tab">風景(<span id="info_tab2"></span>)</a></li>
-                          <li><a href="#tab3" data-toggle="tab">視点(<span id="info_tab3"></span>)</a></li>
-                          <li><a href="#tab4" data-toggle="tab">地域(<span id="info_tab4"></span>)</a></li>
-                      </ul>
-                      <div id="relation_tab_content" class="tab-content">
-                          <div class="tab-pane fade in active" id="tab0"></div>
-                          <div class="tab-pane fade" id="tab1"></div>
-                          <div class="tab-pane fade" id="tab2"></div>
-                          <div class="tab-pane fade" id="tab3"></div>
-                          <div class="tab-pane fade" id="tab4"></div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
-           </div>
         </div>
-      </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row modal_thumbnail_photo">
+                    <!-- Selcted photo -->
+                    <div class="col-sm-5">
+                        <div class="thumbnail" id="modal_body_photo"></div>
+                    </div>
+                    <!-- Main relation -->
+                    <div class="col-sm-7">
+                        <div class="row" id="modal_body_photo_main_relation"></div>
+                    </div>
+                </div>
+
+                <!-- Sub relation -->
+                <div class="row">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab0" data-toggle="tab">全体</a></li>
+                        <li><a href="#tab1" data-toggle="tab">車両(<span id="info_tab1"></span>)</a></li>
+                        <li><a href="#tab2" data-toggle="tab">風景(<span id="info_tab2"></span>)</a></li>
+                        <li><a href="#tab3" data-toggle="tab">視点(<span id="info_tab3"></span>)</a></li>
+                        <li><a href="#tab4" data-toggle="tab">地域(<span id="info_tab4"></span>)</a></li>
+                    </ul>
+                    <div id="relation_tab_content" class="tab-content">
+                        <div class="tab-pane fade in active" id="tab0"></div>
+                        <div class="tab-pane fade" id="tab1"></div>
+                        <div class="tab-pane fade" id="tab2"></div>
+                        <div class="tab-pane fade" id="tab3"></div>
+                        <div class="tab-pane fade" id="tab4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+        </div>
     </div>
-  </body>
+    </div>
+</div>
+
+</body>
+
 </html>
