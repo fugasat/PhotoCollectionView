@@ -13,8 +13,8 @@ def test_get():
 
 
 def test_get_angle():
-    assert {"正面": 0, "側面": 0, "斜面": 1, "高い": 0, "遠い": 0} == features.get_angle(1386)
-    assert {"正面": 1, "側面": 0, "斜面": 0, "高い": 1, "遠い": 1} == features.get_angle(1395)
+    assert {"正面": 0, "側面": 0, "斜面": 1, "高い": 0, "低い": 1, "近い": 1, "遠い": 0} == features.get_angle(1386)
+    assert {"正面": 1, "側面": 0, "斜面": 0, "高い": 1, "低い": 0, "近い": 0, "遠い": 1} == features.get_angle(1395)
 
 
 def test_get_angle_values():
@@ -64,8 +64,16 @@ def test_get_model():
 
 
 def test_get_model_values():
-    assert ["14", "dd51", "nimotu"] == features.get_model_values(1267)
-    assert ["ef58", "old_pc"] == features.get_model_values(1384)
+    values = features.get_model_values(1267)
+    assert 3 == len(values)
+    assert True == ("14" in values)
+    assert True == ("dd51" in values)
+    assert True == ("nimotu" in values)
+
+    values = features.get_model_values(1384)
+    assert 2 == len(values)
+    assert True == ("ef58" in values)
+    assert True == ("old_pc" in values)
 
 
 def test_similarity():

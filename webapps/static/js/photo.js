@@ -37,6 +37,8 @@ $(function(){
             {relation_type: 0, index: 0},
             {relation_type: 5, index: 1},
             {relation_type: 3, index: 2},
+            {relation_type: 1, index: 3},
+            {relation_type: 4, index: 4},
         ];
 
         for (let index in relation_param) {

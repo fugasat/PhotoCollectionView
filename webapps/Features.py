@@ -49,10 +49,6 @@ class Features():
         df_row_feature_on = df_row_feature[df_row_feature > 0].dropna(axis=1)  # 値が"1"の列だけ抽出
         array_values = df_row_feature_on.columns.values
         list_values = list(array_values)  # np.append()は遅いので使わないこと
-        if "高い" not in list_values:
-            list_values.append("低い")
-        if "遠い" not in list_values:
-            list_values.append("近い")
         return list_values
 
     def get_rail(self, uid):
@@ -103,13 +99,13 @@ class Features():
 
     def get_model(self, uid):
         row = self.df[self.df["ID"] == uid].iloc[0]
-        row_feature = row.loc["183":]
+        row_feature = row.loc["ef65":]
         row_dict = row_feature.to_dict()
         return row_dict
 
     def get_model_values(self, uid):
         df_row = self.df[self.df["ID"] == uid]
-        df_row_feature = df_row.loc[:, "183":]
+        df_row_feature = df_row.loc[:, "ef65":]
         df_row_feature_on = df_row_feature[df_row_feature > 0].dropna(axis=1)
         array_values = df_row_feature_on.columns.values
         list_values = list(array_values)
@@ -119,6 +115,7 @@ class Features():
         print("uid={0}, relation type={1}".format(uid, relation_type))
 
         df_feature = self.df.loc[:, "正面":]
+        df_feature = df_feature.drop("main_model", axis=1)
 
         # 特定の特徴量を強調させる
         uid = int(uid)
@@ -127,12 +124,19 @@ class Features():
             current_value = self.get_model_values(uid)[0]
             rtype = Const.type_model()
             if relation_type == Const.type_model():
-                df_feature.loc[:, "183":] = df_feature.loc[:, "183":] * 3
+                df_feature.loc[:, "ef65":] = df_feature.loc[:, "ef65":] * 3
                 df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
                 df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 1.5
             elif relation_type == Const.type_scene():
                 current_value = self.get_model_values(uid)[0]
                 df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 2
+            elif relation_type == Const.type_angle():
+                current_value = self.get_model_values(uid)[0]
+                df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * 2
+            elif relation_type == Const.type_area():
+                current_value = self.get_model_values(uid)[0]
+                df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
+
 
             # 正規化(z-score)
             # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
