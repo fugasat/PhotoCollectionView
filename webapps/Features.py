@@ -120,23 +120,30 @@ class Features():
         # 特定の特徴量を強調させる
         uid = int(uid)
         relation_type = int(relation_type)
+        relation_info = ""
         if relation_type is not None:
             current_value = self.get_model_values(uid)[0]
             rtype = Const.type_model()
             if relation_type == Const.type_model():
+                relation_info = self.get_model_values(uid)
                 df_feature.loc[:, "ef65":] = df_feature.loc[:, "ef65":] * 3
                 df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
                 df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 1.5
             elif relation_type == Const.type_scene():
+                relation_info = self.get_scene_values(uid)
                 current_value = self.get_model_values(uid)[0]
                 df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 2
+                df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * 0.5
             elif relation_type == Const.type_angle():
+                relation_info = self.get_angle_values(uid)
                 current_value = self.get_model_values(uid)[0]
                 df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * 2
+                df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 0.5
             elif relation_type == Const.type_area():
+                relation_info = self.get_area_values(uid)
                 current_value = self.get_model_values(uid)[0]
                 df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
-
+                df_feature.loc[:, "ef65":] = df_feature.loc[:, "ef65":] * 0
 
             # 正規化(z-score)
             # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
@@ -156,4 +163,8 @@ class Features():
         # ターゲットの行indexを取得
         # (ターゲットをdrop、類似度を降順でソート)
         row_cs_target = df_cs.loc[uid].drop(uid).sort_values(ascending=False)
-        return row_cs_target.index.values;
+        result = {
+            "info": relation_info,
+            "uids": row_cs_target.index.values,
+        }
+        return result

@@ -48,7 +48,8 @@ div {
 /* selected photo */
 /* relation(common) */
 .modal_thumbnail_photo {
-    height: 400px;
+    height: 350px;
+    margin-bottom: 10px;
 }
 
 /* main relation */

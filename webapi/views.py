@@ -19,8 +19,11 @@ class PhotoViewSet(viewsets.ModelViewSet):
 def get_relation(request, uid, relation_type=None):
     uid = int(uid)
     if request.method == 'GET':
+        result = {}
         # 類似度が高いデータを6個取得
-        uids = __features.get_relation_uids(uid, relation_type)[:10]
+        relation = __features.get_relation_uids(uid, relation_type)
+        result["info"] = ",".join(relation["info"])
+        uids = relation["uids"][:10]
         datas = Photo.objects.filter(uid__in=uids).values()
         # 正しい順番でソート
         data = []
@@ -28,4 +31,5 @@ def get_relation(request, uid, relation_type=None):
             for item in datas:
                 if item["uid"] == s_uid:
                     data.append(item)
-        return Response(data)
+        result["relation"] = data
+        return Response(result)
