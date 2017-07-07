@@ -1,71 +1,81 @@
 $(function(){
     $(".cell_photo").click(function(){
-        $("#modal_thumbnail").data("photo-uid", $(this).data("photo-uid"));
-        var file_path = $(this).data("file-path");
-        var img_url = '"/static/photos/' + file_path + '"'
-
-        $('#modal_body_photo').css('background-image', 'url(' + img_url + ')');
-
-        create_main_relation_table("#modal_body_photo_main_relation");
-        create_sub_relation_table(0);
-        create_sub_relation_table(1);
-        create_sub_relation_table(2);
-        create_sub_relation_table(3);
-        create_sub_relation_table(4);
-
+        let photo_uid = $(this).data("photo-uid");
+        let file_path = $(this).data("file-path");
+        create_modal_body(photo_uid, file_path);
         $("#modal_thumbnail").modal("show");
-
         return false;
     });
 
     $('#modal_thumbnail').on('shown.bs.modal', function (event) {
-        let photo_uid = $(this).data("photo-uid");
+        initialize_relation_image();
+	});
+});
 
-        /*
+//
+// Modal
+//
+function create_modal_body(photo_uid, file_path) {
+    $("#modal_thumbnail").data("photo-uid", photo_uid);
+    let img_url = '"/static/photos/' + file_path + '"'
+
+    $('#modal_body_photo').css('background-image', 'url(' + img_url + ')');
+
+    create_main_relation_table("#modal_body_photo_main_relation");
+    create_sub_relation_table(0);
+    create_sub_relation_table(1);
+    create_sub_relation_table(2);
+    create_sub_relation_table(3);
+    create_sub_relation_table(4);
+}
+
+function initialize_relation_image() {
+    let photo_uid = $("#modal_thumbnail").data("photo-uid");
+
+    /*
+    $.ajax({
+        url: "relation/" + photo_uid,
+    }).done(function(data){
+        for (let i=0; i < 6; i++) {
+            let item = data[i]
+            let file_path = item["file_path"];
+            let img_url = '"/static/photos/' + file_path + '"';
+            $("#main_relation_" + i).css('background-image', 'url(' + img_url + ')');
+        }
+
+    }).fail(function(data){
+        alert('error!!! : ' + data);
+    });
+    */
+
+    let relation_param = [
+        {relation_type: 0, index: 0},
+        {relation_type: 5, index: 1},
+        {relation_type: 3, index: 2},
+        {relation_type: 1, index: 3},
+        {relation_type: 4, index: 4},
+    ];
+
+    for (let index in relation_param) {
+        let param = relation_param[index];
         $.ajax({
-            url: "relation/" + photo_uid,
+            url: "relation/" + photo_uid + "/" + param.relation_type + "/" ,
         }).done(function(data){
-            for (let i=0; i < 6; i++) {
-                let item = data[i]
+            relation = data.relation;
+            if (param.index > 0) {
+                $("#info_tab" + param.index).text(data.info);
+            }
+            for (let i=0; i < relation.length; i++) {
+                let item = relation[i]
                 let file_path = item["file_path"];
                 let img_url = '"/static/photos/' + file_path + '"';
-                $("#main_relation_" + i).css('background-image', 'url(' + img_url + ')');
+                $("#sub_relation_" + param.index + "_" + i).css('background-image', 'url(' + img_url + ')');
             }
-
         }).fail(function(data){
             alert('error!!! : ' + data);
         });
-        */
-
-        let relation_param = [
-            {relation_type: 0, index: 0},
-            {relation_type: 5, index: 1},
-            {relation_type: 3, index: 2},
-            {relation_type: 1, index: 3},
-            {relation_type: 4, index: 4},
-        ];
-
-        for (let index in relation_param) {
-            let param = relation_param[index];
-            $.ajax({
-                url: "relation/" + photo_uid + "/" + param.relation_type + "/" ,
-            }).done(function(data){
-                relation = data.relation;
-                if (param.index > 0) {
-                    $("#info_tab" + param.index).text(data.info);
-                }
-                for (let i=0; i < relation.length; i++) {
-                    let item = relation[i]
-                    let file_path = item["file_path"];
-                    let img_url = '"/static/photos/' + file_path + '"';
-                    $("#sub_relation_" + param.index + "_" + i).css('background-image', 'url(' + img_url + ')');
-                }
-            }).fail(function(data){
-                alert('error!!! : ' + data);
-            });
-        }
-	});
-});
+    }
+}
 
 //
 // Main relation
