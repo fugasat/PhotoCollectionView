@@ -27,6 +27,15 @@ function create_modal_body(photo_uid, file_path) {
     create_sub_relation_table(2);
     create_sub_relation_table(3);
     create_sub_relation_table(4);
+
+    $(".cell_sub_relation_photo").click(function(){
+        let photo_uid = $(this).data("photo-uid");
+        let file_path = $(this).data("file-path");
+        create_modal_body(photo_uid, file_path);
+        initialize_relation_image();
+        return false;
+    });
+
 }
 
 function initialize_relation_image() {
@@ -69,7 +78,10 @@ function initialize_relation_image() {
                 let item = relation[i]
                 let file_path = item["file_path"];
                 let img_url = '"/static/photos/' + file_path + '"';
-                $("#sub_relation_" + param.index + "_" + i).css('background-image', 'url(' + img_url + ')');
+                let element_id = "#sub_relation_" + param.index + "_" + i;
+                $(element_id).css('background-image', 'url(' + img_url + ')');
+                $(element_id).data("photo-uid", item["uid"]);
+                $(element_id).data("file-path", item["file_path"]);
             }
         }).fail(function(data){
             alert('error!!! : ' + data);
@@ -84,7 +96,10 @@ function create_main_relation_table(parent_id) {
     $(parent_id).empty();
     for (var i = 0; i < 6; i++) {
         var element_id = "main_relation_" + i;
-        var item = "<div class='col-sm-4 modal_thumbnail_main_row'><div id='" + element_id + "' class='thumbnail'></div></div>";
+        var item =
+            "<div class='col-sm-4 modal_thumbnail_main_row'>" +
+                "<div id='" + element_id + "' class='thumbnail' />" +
+            "</div>";
         $(parent_id).append(item);
     }
 }
@@ -95,18 +110,18 @@ function create_main_relation_table(parent_id) {
 function create_sub_relation_table(index) {
     let parent_id = "#tab" + index;
     $(parent_id).empty();
-    let table_header =
+    let table_data = get_sub_relation_table_data(index)
+    let table_body =
         "<div class='table-responsive'>" +
             "<table class='table table-striped modal_thumbnail_sub_table'>" +
                 "<tbody>" +
-                    "<tr>";
-    let table_footer =
+                    "<tr>" +
+                        table_data +
                     "</tr>" +
                 "</tbody>" +
             "</table>" +
         "</div>";
-    let table_data = get_sub_relation_table_data(index)
-    $(parent_id).append(table_header + table_data + table_footer);
+    $(parent_id).append(table_body);
 }
 
 function get_sub_relation_table_data(index) {
@@ -115,7 +130,7 @@ function get_sub_relation_table_data(index) {
         var element_id = "sub_relation_" + index + "_" + i;
         table_data +=
             "<td class='modal_thumbnail_sub_row'>" +
-                "<div id='" + element_id + "' class='thumbnail'></div>" +
+                "<a id='" + element_id + "' href='#' class='cell_sub_relation_photo thumbnail' />" +
             "</td>";
     }
     return table_data;
