@@ -65,6 +65,7 @@ function initialize_relation_image() {
         {relation_type: 4, index: 4},
     ];
 
+    var photo_info = "ID=" + photo_uid;
     for (let index in relation_param) {
         let param = relation_param[index];
         $.ajax({
@@ -73,6 +74,11 @@ function initialize_relation_image() {
             relation = data.relation;
             if (param.index > 0) {
                 $("#info_tab" + param.index).text(data.info);
+                if (photo_info.length > 0) {
+                    photo_info += ",";
+                }
+                photo_info += data.info;
+                $("#modal_title").text(photo_info);
             }
             for (let i=0; i < relation.length; i++) {
                 let item = relation[i]
