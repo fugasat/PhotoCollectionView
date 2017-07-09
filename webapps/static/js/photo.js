@@ -41,21 +41,19 @@ function create_modal_body(photo_uid, file_path) {
 function initialize_relation_image() {
     let photo_uid = $("#modal_thumbnail").data("photo-uid");
 
-    /*
     $.ajax({
-        url: "relation/" + photo_uid,
+        url: "relation/" + photo_uid + "/0/",
     }).done(function(data){
+        relation = data.relation;
         for (let i=0; i < 6; i++) {
-            let item = data[i]
+            let item = relation[i]
             let file_path = item["file_path"];
             let img_url = '"/static/photos/' + file_path + '"';
             $("#main_relation_" + i).css('background-image', 'url(' + img_url + ')');
         }
-
     }).fail(function(data){
         alert('error!!! : ' + data);
     });
-    */
 
     let relation_param = [
         {relation_type: 0, index: 0},
