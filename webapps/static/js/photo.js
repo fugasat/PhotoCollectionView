@@ -45,8 +45,10 @@ function initialize_relation_image() {
         url: "relation/" + photo_uid + "/0/",
     }).done(function(data){
         relation = data.relation;
+        similarity = data.similarity;
         for (let i=0; i < 6; i++) {
-            let item = relation[i]
+            let item = relation[i];
+            console.log(similarity[i]);
             let file_path = item["file_path"];
             let img_url = '"/static/photos/' + file_path + '"';
             $("#main_relation_" + i).css('background-image', 'url(' + img_url + ')');

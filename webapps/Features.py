@@ -167,5 +167,6 @@ class Features():
         result = {
             "info": relation_info,
             "uids": row_cs_target.index.values,
+            "similarity": row_cs_target.values,
         }
         return result

@@ -32,4 +32,5 @@ def get_relation(request, uid, relation_type=None):
                 if item["uid"] == s_uid:
                     data.append(item)
         result["relation"] = data
+        result["similarity"] = relation["similarity"]
         return Response(result)
