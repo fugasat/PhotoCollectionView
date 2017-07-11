@@ -27,26 +27,26 @@
             {% for photo in photo_list %}
                 <div class="col-sm-3 bg-info">
                     <div class="row">
-                        <div class="photo_wrapper">
-                            <a href="#" class="cell_photo thumbnail" data-photo-uid="{{photo.uid}}" data-file-path="{{photo.file_path}}" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                        <div class="photo_contents">
+                            <a href="#" class="cell_photo thumbnail photo_wrapper" data-photo-uid="{{photo.uid}}" data-file-path="{{photo.file_path}}" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                                <div class="photo_info">
+                                    <div class="col-sm-3">
+                                        <span>
+                                            ID:{{photo.uid}}
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span>
+                                            {{photo.date_label}}
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span>
+                                            Score:{{photo.score}}({{photo.favorites}})
+                                        </span>
+                                    </div>
+                                </div>
                             </a>
-                            <div class="photo_info">
-                                <div class="col-sm-3">
-                                    <span>
-                                        ID:{{photo.uid}}
-                                    </span>
-                                </div>
-                                <div class="col-sm-4">
-                                    <span>
-                                        {{photo.date_label}}
-                                    </span>
-                                </div>
-                                <div class="col-sm-5">
-                                    <span>
-                                        Score:{{photo.score}}({{photo.favorites}})
-                                    </span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

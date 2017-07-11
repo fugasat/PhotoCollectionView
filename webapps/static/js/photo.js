@@ -104,7 +104,9 @@ function create_main_relation_table(parent_id) {
         var element_id = "main_relation_" + i;
         var item =
             "<div class='col-sm-4 modal_thumbnail_main_row'>" +
-                "<div id='" + element_id + "' class='thumbnail' />" +
+                "<a id='" + element_id + "' href='#' class='cell_main_relation_photo thumbnail photo_wrapper'>" +
+                    "<div class='photo_info relation'>50%</div>" +
+                "</a>" +
             "</div>";
         $(parent_id).append(item);
     }
@@ -136,7 +138,9 @@ function get_sub_relation_table_data(index) {
         var element_id = "sub_relation_" + index + "_" + i;
         table_data +=
             "<td class='modal_thumbnail_sub_row'>" +
-                "<a id='" + element_id + "' href='#' class='cell_sub_relation_photo thumbnail' />" +
+                "<a id='" + element_id + "' href='#' class='cell_sub_relation_photo thumbnail photo_wrapper'>" +
+                    "<div class='photo_info relation'>50%</div>" +
+                "</a>" +
             "</td>";
     }
     return table_data;
