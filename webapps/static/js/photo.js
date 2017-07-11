@@ -28,7 +28,7 @@ function create_modal_body(photo_uid, file_path) {
     create_sub_relation_table(3);
     create_sub_relation_table(4);
 
-    $(".cell_sub_relation_photo").click(function(){
+    $(".cell_relation_photo").click(function(){
         let photo_uid = $(this).data("photo-uid");
         let file_path = $(this).data("file-path");
         create_modal_body(photo_uid, file_path);
@@ -44,14 +44,14 @@ function initialize_relation_image() {
     $.ajax({
         url: "relation/" + photo_uid + "/0/",
     }).done(function(data){
-        relation = data.relation;
-        similarity = data.similarity;
+        let relation = data.relation;
+        let similarity = data.similarity;
         for (let i=0; i < 6; i++) {
-            let item = relation[i];
-            console.log(similarity[i]);
-            let file_path = item["file_path"];
-            let img_url = '"/static/photos/' + file_path + '"';
-            $("#main_relation_" + i).css('background-image', 'url(' + img_url + ')');
+            initialize_relation_cell(
+                relation[i], similarity[i],
+                "#main_relation_" + i,
+                "#main_relation_info_" + i);
+
         }
     }).fail(function(data){
         alert('error!!! : ' + data);
@@ -71,7 +71,8 @@ function initialize_relation_image() {
         $.ajax({
             url: "relation/" + photo_uid + "/" + param.relation_type + "/" ,
         }).done(function(data){
-            relation = data.relation;
+            let relation = data.relation;
+            let similarity = data.similarity;
             if (param.index > 0) {
                 $("#info_tab" + param.index).text(data.info);
                 if (photo_info.length > 0) {
@@ -81,13 +82,10 @@ function initialize_relation_image() {
                 $("#modal_title").text(photo_info);
             }
             for (let i=0; i < relation.length; i++) {
-                let item = relation[i]
-                let file_path = item["file_path"];
-                let img_url = '"/static/photos/' + file_path + '"';
-                let element_id = "#sub_relation_" + param.index + "_" + i;
-                $(element_id).css('background-image', 'url(' + img_url + ')');
-                $(element_id).data("photo-uid", item["uid"]);
-                $(element_id).data("file-path", item["file_path"]);
+                initialize_relation_cell(
+                    relation[i], similarity[i],
+                    "#sub_relation_" + param.index + "_" + i,
+                    "#sub_relation_info_" + param.index + "_" + i);
             }
         }).fail(function(data){
             alert('error!!! : ' + data);
@@ -95,17 +93,28 @@ function initialize_relation_image() {
     }
 }
 
+function initialize_relation_cell(item, similarity, element_cell_id, element_info_id) {
+    let file_path = item["file_path"];
+    let img_url = '"/static/photos/' + file_path + '"';
+    $(element_cell_id).css('background-image', 'url(' + img_url + ')');
+    $(element_cell_id).data("photo-uid", item["uid"]);
+    $(element_cell_id).data("file-path", item["file_path"]);
+    let s = Math.round(similarity * 100);
+    $(element_info_id).text(s + "%");
+}
+
 //
 // Main relation
 //
 function create_main_relation_table(parent_id) {
     $(parent_id).empty();
-    for (var i = 0; i < 6; i++) {
-        var element_id = "main_relation_" + i;
-        var item =
+    for (let i = 0; i < 6; i++) {
+        let element_cell_id = "main_relation_" + i;
+        let element_info_id = "main_relation_info_" + i;
+        let item =
             "<div class='col-sm-4 modal_thumbnail_main_row'>" +
-                "<a id='" + element_id + "' href='#' class='cell_main_relation_photo thumbnail photo_wrapper'>" +
-                    "<div class='photo_info relation'>50%</div>" +
+                "<a id='" + element_cell_id + "' href='#' class='cell_relation_photo thumbnail photo_wrapper'>" +
+                    "<div id='" + element_info_id + "' class='photo_info relation'></div>" +
                 "</a>" +
             "</div>";
         $(parent_id).append(item);
@@ -134,12 +143,13 @@ function create_sub_relation_table(index) {
 
 function get_sub_relation_table_data(index) {
     var table_data = ""
-    for (var i = 0; i < 10; i++) {
-        var element_id = "sub_relation_" + index + "_" + i;
+    for (let i = 0; i < 10; i++) {
+        let element_cell_id = "sub_relation_" + index + "_" + i;
+        let element_info_id = "sub_relation_info_" + index + "_" + i;
         table_data +=
             "<td class='modal_thumbnail_sub_row'>" +
-                "<a id='" + element_id + "' href='#' class='cell_sub_relation_photo thumbnail photo_wrapper'>" +
-                    "<div class='photo_info relation'>50%</div>" +
+                "<a id='" + element_cell_id + "' href='#' class='cell_relation_photo thumbnail photo_wrapper'>" +
+                    "<div id='" + element_info_id + "' class='photo_info relation'></div>" +
                 "</a>" +
             "</td>";
     }
