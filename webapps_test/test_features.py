@@ -75,6 +75,13 @@ def test_get_model_values():
     assert True == ("ef58" in values)
     assert True == ("old_pc" in values)
 
+    # 想定された優先度でソートされているか？
+    values = features.get_model_values(1010)
+    assert 3 == len(values)
+    assert True == ("113y" in values[0])
+    #assert True == ("ef65" in values[1])
+    #assert True == ("fre" in values[2])
+
 
 def test_similarity():
     uids = features.get_relation_uids(1395, -1)

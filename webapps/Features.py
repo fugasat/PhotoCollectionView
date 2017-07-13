@@ -99,16 +99,22 @@ class Features():
 
     def get_model(self, uid):
         row = self.df[self.df["ID"] == uid].iloc[0]
-        row_feature = row.loc["ef65":]
+        row_feature = row.iloc[31:]
         row_dict = row_feature.to_dict()
         return row_dict
 
     def get_model_values(self, uid):
         df_row = self.df[self.df["ID"] == uid]
-        df_row_feature = df_row.loc[:, "ef65":]
+        main_model = df_row["main_model"].values[0]
+        df_row_feature = df_row.iloc[:, 31:]
         df_row_feature_on = df_row_feature[df_row_feature > 0].dropna(axis=1)
         array_values = df_row_feature_on.columns.values
         list_values = list(array_values)
+        # main modelを戻り値の先頭に配置
+        if main_model in list_values:
+            index = list_values.index(main_model)
+            if index > 0:
+                list_values[0], list_values[index] = list_values[index], list_values[0]
         return list_values
 
     def get_relation_uids(self, uid, relation_type=None):
@@ -127,7 +133,7 @@ class Features():
                 current_value = self.get_model_values(uid)[0]
                 relation_info = self.get_model_values(uid)
                 df_feature[current_value] = df_feature[current_value] * 2
-                df_feature.loc[:, "ef65":] = df_feature.loc[:, "ef65":] * 3
+                df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 3
                 df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
                 df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 1.5
             elif relation_type == Const.type_scene():
@@ -144,7 +150,7 @@ class Features():
                 relation_info = self.get_area_values(uid)
                 current_value = self.get_model_values(uid)[0]
                 df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
-                df_feature.loc[:, "ef65":] = df_feature.loc[:, "ef65":] * 0
+                df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 0
 
             # 正規化(z-score)
             # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
