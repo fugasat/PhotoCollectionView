@@ -1,10 +1,10 @@
 import os.path
 from datetime import datetime
-import numpy as np
 import pandas as pd
 
 from django.core.management.base import BaseCommand, CommandError
 from webapps.models import Photo
+
 
 class Command(BaseCommand):
     help = 'import data.csv into the models.'
