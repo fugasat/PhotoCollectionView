@@ -132,10 +132,11 @@ class Features():
             if relation_type == Const.type_model():
                 current_value = self.get_model_values(uid)[0]
                 relation_info = self.get_model_values(uid)
-                df_feature[current_value] = df_feature[current_value] * 2
-                df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 3
-                df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
-                df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 1.5
+                df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 2
+                df_feature[current_value] = df_feature[current_value] * 3
+                df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 1.5
+                df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * 0.5
+                df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 0.5
             elif relation_type == Const.type_scene():
                 relation_info = self.get_scene_values(uid)
                 current_value = self.get_model_values(uid)[0]
