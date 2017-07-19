@@ -142,16 +142,19 @@ class Features():
                 current_value = self.get_model_values(uid)[0]
                 df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 2
                 df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * 0.5
+                df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 0.1
             elif relation_type == Const.type_angle():
                 relation_info = self.get_angle_values(uid)
                 current_value = self.get_model_values(uid)[0]
                 df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * 2
-                df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 0.5
+                df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 0.1
+                df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 0.1
+                df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 0.1
             elif relation_type == Const.type_area():
                 relation_info = self.get_area_values(uid)
                 current_value = self.get_model_values(uid)[0]
                 df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
-                df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 0
+                df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 0.1
 
             # 正規化(z-score)
             # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
@@ -170,7 +173,8 @@ class Features():
 
         # ターゲットの行indexを取得
         # (ターゲットをdrop、類似度を降順でソート)
-        row_cs_target = df_cs.loc[uid].drop(uid).sort_values(ascending=False)
+        row_cs_target = df_cs.loc[uid].drop(uid)
+        row_cs_target = row_cs_target.sort_values(ascending=False)
         result = {
             "info": relation_info,
             "uids": row_cs_target.index.values,
