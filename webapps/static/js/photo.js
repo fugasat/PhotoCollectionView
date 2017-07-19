@@ -1,7 +1,10 @@
+var view_history = []
+
 $(function(){
     $(".cell_photo").click(function(){
         let photo_uid = $(this).data("photo-uid");
         let file_path = $(this).data("file-path");
+        update_view_history(photo_uid);
         create_modal_body(photo_uid, file_path);
         $("#modal_thumbnail").modal("show");
         return false;
@@ -11,6 +14,11 @@ $(function(){
         initialize_relation_image();
 	});
 });
+
+function update_view_history(photo_uid) {
+    view_history.unshift(photo_uid);
+    console.log(view_history);
+}
 
 //
 // Modal
@@ -31,11 +39,11 @@ function create_modal_body(photo_uid, file_path) {
     $(".cell_relation_photo").click(function(){
         let photo_uid = $(this).data("photo-uid");
         let file_path = $(this).data("file-path");
+        update_view_history(photo_uid);
         create_modal_body(photo_uid, file_path);
         initialize_relation_image();
         return false;
     });
-
 }
 
 function initialize_relation_image() {
