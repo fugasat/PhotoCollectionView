@@ -1,33 +1,12 @@
 import os.path
+import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import StandardScaler
+from webapps.const import Const
 
 
-class Const():
-
-    @staticmethod
-    def type_angle():
-        return 1
-
-    @staticmethod
-    def type_rail():
-        return 2
-
-    @staticmethod
-    def type_scene():
-        return 3
-
-    @staticmethod
-    def type_area():
-        return 4
-
-    @staticmethod
-    def type_model():
-        return 5
-
-
-class Features():
+class Features:
 
     def __init__(self, csv_path):
         self.df = pd.read_csv(csv_path)
@@ -39,13 +18,13 @@ class Features():
 
     def get_angle(self, uid):
         row = self.df[self.df["ID"] == uid].iloc[0]
-        row_feature = row.loc["正面":"遠い"]
+        row_feature = row.loc["正面":"曲線"]
         row_dict = row_feature.to_dict()
         return row_dict
 
     def get_angle_values(self, uid):
         df_row = self.df[self.df["ID"] == uid]
-        df_row_feature = df_row.loc[:, "正面":"遠い"]
+        df_row_feature = df_row.loc[:, "正面":"曲線"]
         df_row_feature_on = df_row_feature[df_row_feature > 0].dropna(axis=1)  # 値が"1"の列だけ抽出
         array_values = df_row_feature_on.columns.values
         list_values = list(array_values)  # np.append()は遅いので使わないこと
@@ -179,5 +158,30 @@ class Features():
             "info": relation_info,
             "uids": row_cs_target.index.values,
             "similarity": row_cs_target.values,
+        }
+        return result
+
+    def get_type_similarity(self, uid1, uid2):
+        angle1 = np.array(list(self.get_angle(uid1).values()))
+        angle2 = np.array(list(self.get_angle(uid2).values()))
+        cs_angle = cosine_similarity(angle1, angle2)[0][0]
+
+        scene1 = np.array(list(self.get_scene(uid1).values()))
+        scene2 = np.array(list(self.get_scene(uid2).values()))
+        cs_scene = cosine_similarity(scene1, scene2)[0][0]
+
+        model1 = np.array(list(self.get_model(uid1).values()))
+        model2 = np.array(list(self.get_model(uid2).values()))
+        cs_model = cosine_similarity(model1, model2)[0][0]
+
+        area1 = np.array(list(self.get_area(uid1).values()))
+        area2 = np.array(list(self.get_area(uid2).values()))
+        cs_area = cosine_similarity(area1, area2)[0][0]
+
+        result = {
+            Const.type_angle(): cs_angle,
+            Const.type_scene(): cs_scene,
+            Const.type_area(): cs_area,
+            Const.type_model(): cs_model,
         }
         return result

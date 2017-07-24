@@ -13,13 +13,13 @@ def test_get():
 
 
 def test_get_angle():
-    assert {"正面": 0, "側面": 0, "斜面": 1, "高い": 0, "低い": 1, "近い": 1, "遠い": 0} == features.get_angle(1386)
-    assert {"正面": 1, "側面": 0, "斜面": 0, "高い": 1, "低い": 0, "近い": 0, "遠い": 1} == features.get_angle(1395)
+    assert {"正面": 0, "側面": 0, "斜面": 1, "高い": 0, "低い": 1, "近い": 1, "遠い": 0, "直線": 1, "曲線": 0} == features.get_angle(1386)
+    assert {"正面": 1, "側面": 0, "斜面": 0, "高い": 1, "低い": 0, "近い": 0, "遠い": 1, "直線": 0, "曲線": 1} == features.get_angle(1395)
 
 
 def test_get_angle_values():
-    assert ["斜面", "低い", "近い"] == features.get_angle_values(1386)
-    assert ["正面", "高い", "遠い"] == features.get_angle_values(1395)
+    assert ["斜面", "低い", "近い", "直線"] == features.get_angle_values(1386)
+    assert ["正面", "高い", "遠い", "曲線"] == features.get_angle_values(1395)
 
 
 def test_get_rail():
@@ -87,3 +87,21 @@ def test_similarity():
     uids = features.get_relation_uids(1395, -1)
     uids = features.get_relation_uids(1395, 0)
     uids = features.get_relation_uids(1395, 4)
+
+
+def test_type_similarity():
+    # model
+    s = features.get_type_similarity(1034, 1357)
+    assert max([(v, k) for k, v in s.items()])[1] == 5
+
+    # area
+    s = features.get_type_similarity(1034, 1322)
+    assert max([(v, k) for k, v in s.items()])[1] == 4
+
+    # scene
+    s = features.get_type_similarity(1034, 1184)
+    assert max([(v, k) for k, v in s.items()])[1] == 3
+
+    # angle
+    s = features.get_type_similarity(1034, 1411)
+    assert max([(v, k) for k, v in s.items()])[1] == 1
