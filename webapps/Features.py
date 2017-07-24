@@ -97,8 +97,6 @@ class Features:
         return list_values
 
     def get_relation_uids(self, uid, relation_type=None):
-        print("uid={0}, relation type={1}".format(uid, relation_type))
-
         df_feature = self.df.loc[:, "正面":]
         df_feature = df_feature.drop("main_model", axis=1)
 
@@ -162,20 +160,20 @@ class Features:
         return result
 
     def get_type_similarity(self, uid1, uid2):
-        angle1 = np.array(list(self.get_angle(uid1).values()))
-        angle2 = np.array(list(self.get_angle(uid2).values()))
-        cs_angle = cosine_similarity(angle1, angle2)[0][0]
+        angle1 = np.array(list(self.get_angle(uid1).values())).reshape(1, -1)
+        angle2 = np.array(list(self.get_angle(uid2).values())).reshape(1, -1)
+        cs_angle = cosine_similarity(angle1, angle2)[0][0]  # 1次元ベクトルはdeprecatedなので注意
 
-        scene1 = np.array(list(self.get_scene(uid1).values()))
-        scene2 = np.array(list(self.get_scene(uid2).values()))
+        scene1 = np.array(list(self.get_scene(uid1).values())).reshape(1, -1)
+        scene2 = np.array(list(self.get_scene(uid2).values())).reshape(1, -1)
         cs_scene = cosine_similarity(scene1, scene2)[0][0]
 
-        model1 = np.array(list(self.get_model(uid1).values()))
-        model2 = np.array(list(self.get_model(uid2).values()))
+        model1 = np.array(list(self.get_model(uid1).values())).reshape(1, -1)
+        model2 = np.array(list(self.get_model(uid2).values())).reshape(1, -1)
         cs_model = cosine_similarity(model1, model2)[0][0]
 
-        area1 = np.array(list(self.get_area(uid1).values()))
-        area2 = np.array(list(self.get_area(uid2).values()))
+        area1 = np.array(list(self.get_area(uid1).values())).reshape(1, -1)
+        area2 = np.array(list(self.get_area(uid2).values())).reshape(1, -1)
         cs_area = cosine_similarity(area1, area2)[0][0]
 
         result = {
