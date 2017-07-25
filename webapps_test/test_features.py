@@ -84,9 +84,9 @@ def test_get_model_values():
 
 
 def test_similarity():
-    uids = features.get_relation_uids(1395, -1)
-    uids = features.get_relation_uids(1395, 0)
-    uids = features.get_relation_uids(1395, 4)
+    uids = features.get_relation_uids(1000, 1395, -1)
+    uids = features.get_relation_uids(1000, 1395, 0)
+    uids = features.get_relation_uids(1000, 1395, 4)
 
 
 def test_type_similarity():

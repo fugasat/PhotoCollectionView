@@ -5,7 +5,7 @@ $(function(){
         let photo_uid = $(this).data("photo-uid");
         let file_path = $(this).data("file-path");
         update_view_history(photo_uid);
-        create_modal_body(photo_uid, file_path);
+        create_modal_body(-1, photo_uid, file_path);
         $("#modal_thumbnail").modal("show");
         return false;
     });
@@ -23,7 +23,8 @@ function update_view_history(photo_uid) {
 //
 // Modal
 //
-function create_modal_body(photo_uid, file_path) {
+function create_modal_body(pre_photo_uid, photo_uid, file_path) {
+    $("#modal_thumbnail").data("pre-photo-uid", pre_photo_uid);
     $("#modal_thumbnail").data("photo-uid", photo_uid);
     let img_url = '"/static/photos/' + file_path + '"'
 
@@ -37,20 +38,25 @@ function create_modal_body(photo_uid, file_path) {
     create_sub_relation_table(4);
 
     $(".cell_relation_photo").click(function(){
-        let photo_uid = $(this).data("photo-uid");
-        let file_path = $(this).data("file-path");
-        update_view_history(photo_uid);
-        create_modal_body(photo_uid, file_path);
-        initialize_relation_image();
+        relation_photo_clicked(this);
         return false;
     });
+}
+
+function relation_photo_clicked(element) {
+    let pre_photo_uid = $("#modal_thumbnail").data("pre-photo-uid");
+    let photo_uid = $(element).data("photo-uid");
+    let file_path = $(element).data("file-path");
+    update_view_history(photo_uid);
+    create_modal_body(pre_photo_uid, photo_uid, file_path);
+    initialize_relation_image();
 }
 
 function initialize_relation_image() {
     let photo_uid = $("#modal_thumbnail").data("photo-uid");
 
     $.ajax({
-        url: "relation/" + photo_uid + "/0/",
+        url: "relation/" + "1000" + "/" + photo_uid + "/0/",
     }).done(function(data){
         let relation = data.relation;
         let similarity = data.similarity;
@@ -77,7 +83,7 @@ function initialize_relation_image() {
     for (let index in relation_param) {
         let param = relation_param[index];
         $.ajax({
-            url: "relation/" + photo_uid + "/" + param.relation_type + "/" ,
+            url: "relation/" + "1000" + "/" + photo_uid + "/" + param.relation_type + "/" ,
         }).done(function(data){
             let relation = data.relation;
             let similarity = data.similarity;

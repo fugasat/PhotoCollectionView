@@ -16,12 +16,12 @@ class PhotoViewSet(viewsets.ModelViewSet):
     serializer_class = PhotoSerializer
 
 @api_view(['GET'])
-def get_relation(request, uid, relation_type=None):
+def get_relation(request, pre_uid, uid, relation_type=None):
     uid = int(uid)
     if request.method == 'GET':
         result = {}
         # 類似度が高いデータを6個取得
-        relation = __features.get_relation_uids(uid, relation_type)
+        relation = __features.get_relation_uids(pre_uid, uid, relation_type)
         result["info"] = ",".join(relation["info"])
         uids = relation["uids"][:10]
         datas = Photo.objects.filter(uid__in=uids).values()
@@ -32,5 +32,5 @@ def get_relation(request, uid, relation_type=None):
                 if item["uid"] == s_uid:
                     data.append(item)
         result["relation"] = data
-        result["similarity"] = relation["similarity"]
+        result["similarity"] = relation["similarity"][:10]
         return Response(result)

@@ -103,3 +103,7 @@ db.sqlite3
 webapps/migrations
 webapps/static/photos
 .idea
+django_memo.txt
+instagram_data.csv
+instagram_data_all.csv
+settings.py

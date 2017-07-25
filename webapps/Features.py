@@ -96,7 +96,7 @@ class Features:
                 list_values[0], list_values[index] = list_values[index], list_values[0]
         return list_values
 
-    def get_relation_uids(self, uid, relation_type=None):
+    def get_relation_uids(self, pre_uid, uid, relation_type=None):
         df_feature = self.df.loc[:, "正面":]
         df_feature = df_feature.drop("main_model", axis=1)
 
