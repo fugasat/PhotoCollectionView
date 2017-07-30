@@ -97,11 +97,13 @@ class Features:
         return list_values
 
     def get_relation_uids(self, pre_uid, uid, relation_type=None):
+        pre_uid = int(pre_uid)
+        uid = int(uid)
+
         df_feature = self.df.loc[:, "正面":]
         df_feature = df_feature.drop("main_model", axis=1)
 
         # 特定の特徴量を強調させる
-        uid = int(uid)
         relation_type = int(relation_type)
         relation_info = ""
         if relation_type is not None:
@@ -140,6 +142,8 @@ class Features:
             f_min = df_feature.min().min()
             df_feature = (df_feature - f_min) / (f_max - f_min)
 
+            type_similarity = self.get_type_similarity(uid, pre_uid)
+
         # 各写真ごとのコサイン類似度を計算
         array = df_feature.as_matrix()
         cs_array = cosine_similarity(array, array)
@@ -156,6 +160,7 @@ class Features:
             "info": relation_info,
             "uids": row_cs_target.index.values,
             "similarity": row_cs_target.values,
+            "type_similarity": type_similarity,
         }
         return result
 

@@ -33,4 +33,5 @@ def get_relation(request, pre_uid, uid, relation_type=None):
                     data.append(item)
         result["relation"] = data
         result["similarity"] = relation["similarity"][:10]
+        result["type_similarity"] = relation["type_similarity"]
         return Response(result)
