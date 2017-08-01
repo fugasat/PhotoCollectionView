@@ -79,14 +79,19 @@ def test_get_model_values():
     values = features.get_model_values(1010)
     assert 3 == len(values)
     assert True == ("113y" in values[0])
-    #assert True == ("ef65" in values[1])
-    #assert True == ("fre" in values[2])
 
 
 def test_similarity():
     uids = features.get_relation_uids(1000, 1395, -1)
     uids = features.get_relation_uids(1000, 1395, 0)
     uids = features.get_relation_uids(1000, 1395, 4)
+
+    uids = features.get_relation_uids(-1, 1395, 4)
+    assert None == uids["type_similarity"]
+    uids = features.get_relation_uids(1000, -1, 4)
+    assert None == uids
+    uids = features.get_relation_uids(-1, -1, 4)
+    assert None == uids
 
 
 def test_type_similarity():
@@ -105,3 +110,12 @@ def test_type_similarity():
     # angle
     s = features.get_type_similarity(1034, 1411)
     assert max([(v, k) for k, v in s.items()])[1] == 1
+
+
+def test_exists():
+    assert True == features.exists(1000)
+    assert True == features.exists(1100)
+    assert False == features.exists(0)
+    assert False == features.exists(-1)
+    assert False == features.exists(999)
+    assert False == features.exists(10000)

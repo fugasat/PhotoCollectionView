@@ -1,11 +1,12 @@
 var view_history = []
+var type_similarity = {}
 
 $(function(){
     $(".cell_photo").click(function(){
         let photo_uid = $(this).data("photo-uid");
         let file_path = $(this).data("file-path");
         update_view_history(photo_uid);
-        create_modal_body(-1, photo_uid, file_path);
+        create_modal_body(0, photo_uid, file_path);
         $("#modal_thumbnail").modal("show");
         return false;
     });
@@ -44,7 +45,7 @@ function create_modal_body(pre_photo_uid, photo_uid, file_path) {
 }
 
 function relation_photo_clicked(element) {
-    let pre_photo_uid = $("#modal_thumbnail").data("pre-photo-uid");
+    let pre_photo_uid = $("#modal_thumbnail").data("photo-uid");
     let photo_uid = $(element).data("photo-uid");
     let file_path = $(element).data("file-path");
     update_view_history(photo_uid);
@@ -53,10 +54,11 @@ function relation_photo_clicked(element) {
 }
 
 function initialize_relation_image() {
+    let pre_photo_uid = $("#modal_thumbnail").data("pre-photo-uid");
     let photo_uid = $("#modal_thumbnail").data("photo-uid");
 
     $.ajax({
-        url: "relation/" + "1000" + "/" + photo_uid + "/0/",
+        url: "relation/" + pre_photo_uid + "/" + photo_uid + "/0/",
     }).done(function(data){
         let relation = data.relation;
         let similarity = data.similarity;
@@ -68,7 +70,7 @@ function initialize_relation_image() {
 
         }
     }).fail(function(data){
-        alert('error!!! : ' + data);
+        console.log('error!!! : ' + data);
     });
 
     let relation_param = [
@@ -83,7 +85,7 @@ function initialize_relation_image() {
     for (let index in relation_param) {
         let param = relation_param[index];
         $.ajax({
-            url: "relation/" + "1000" + "/" + photo_uid + "/" + param.relation_type + "/" ,
+            url: "relation/" + pre_photo_uid + "/" + photo_uid + "/" + param.relation_type + "/" ,
         }).done(function(data){
             let relation = data.relation;
             let similarity = data.similarity;
@@ -102,7 +104,7 @@ function initialize_relation_image() {
                     "#sub_relation_info_" + param.index + "_" + i);
             }
         }).fail(function(data){
-            alert('error!!! : ' + data);
+            console.log('error!!! : ' + data);
         });
     }
 }

@@ -100,12 +100,16 @@ class Features:
         pre_uid = int(pre_uid)
         uid = int(uid)
 
+        if not self.exists(uid):
+            return None
+
         df_feature = self.df.loc[:, "正面":]
         df_feature = df_feature.drop("main_model", axis=1)
 
         # 特定の特徴量を強調させる
         relation_type = int(relation_type)
         relation_info = ""
+        type_similarity = None
         if relation_type is not None:
             rtype = Const.type_model()
             if relation_type == Const.type_model():
@@ -142,7 +146,8 @@ class Features:
             f_min = df_feature.min().min()
             df_feature = (df_feature - f_min) / (f_max - f_min)
 
-            type_similarity = self.get_type_similarity(uid, pre_uid)
+            if self.exists(pre_uid):
+                type_similarity = self.get_type_similarity(uid, pre_uid)
 
         # 各写真ごとのコサイン類似度を計算
         array = df_feature.as_matrix()
@@ -188,3 +193,9 @@ class Features:
             Const.type_model(): cs_model,
         }
         return result
+
+    def exists(self, uid):
+        row = self.df[self.df["ID"] == uid].values
+        if len(row) > 0:
+            return True
+        return False

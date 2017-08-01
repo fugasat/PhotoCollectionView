@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import django_filters
+from django.http import Http404
 from rest_framework import viewsets, filters, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -22,6 +23,8 @@ def get_relation(request, pre_uid, uid, relation_type=None):
         result = {}
         # 類似度が高いデータを6個取得
         relation = __features.get_relation_uids(pre_uid, uid, relation_type)
+        if relation is None:
+            raise Http404
         result["info"] = ",".join(relation["info"])
         uids = relation["uids"][:10]
         datas = Photo.objects.filter(uid__in=uids).values()
