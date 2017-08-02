@@ -1,5 +1,13 @@
-var view_history = []
-var type_similarity = {}
+const relation_param = [
+    {relation_type: 0, index: 0},
+    {relation_type: 5, index: 1},
+    {relation_type: 3, index: 2},
+    {relation_type: 1, index: 3},
+    {relation_type: 4, index: 4},
+];
+
+var view_history = [];
+var current_type_similarity = {};
 
 $(function(){
     $(".cell_photo").click(function(){
@@ -62,6 +70,7 @@ function initialize_relation_image() {
     }).done(function(data){
         let relation = data.relation;
         let similarity = data.similarity;
+        let type_similarity = data.type_similarity;
         for (let i=0; i < 6; i++) {
             initialize_relation_cell(
                 relation[i], similarity[i],
@@ -69,17 +78,18 @@ function initialize_relation_image() {
                 "#main_relation_info_" + i);
 
         }
+        if (type_similarity) {
+            for (key in type_similarity) {
+                if (key in current_type_similarity) {
+                    current_type_similarity[key] = (current_type_similarity[key] + type_similarity[key]) / 2;
+                } else {
+                    current_type_similarity[key] = type_similarity[key];
+                }
+            }
+        }
     }).fail(function(data){
         console.log('error!!! : ' + data);
     });
-
-    let relation_param = [
-        {relation_type: 0, index: 0},
-        {relation_type: 5, index: 1},
-        {relation_type: 3, index: 2},
-        {relation_type: 1, index: 3},
-        {relation_type: 4, index: 4},
-    ];
 
     var photo_info = "ID=" + photo_uid;
     for (let index in relation_param) {
@@ -90,7 +100,8 @@ function initialize_relation_image() {
             let relation = data.relation;
             let similarity = data.similarity;
             if (param.index > 0) {
-                $("#info_tab" + param.index).text(data.info);
+                let s = Math.round(current_type_similarity[param.relation_type] * 100);
+                $("#info_tab" + param.index).text(data.info + " : " + s + "%");
                 if (photo_info.length > 0) {
                     photo_info += ",";
                 }
