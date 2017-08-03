@@ -81,7 +81,7 @@ def test_get_model_values():
     assert True == ("113y" in values[0])
 
 
-def test_similarity():
+def test_get_relation_uids():
     uids = features.get_relation_uids(1000, 1395, -1)
     uids = features.get_relation_uids(1000, 1395, 0)
     uids = features.get_relation_uids(1000, 1395, 4)
@@ -93,6 +93,9 @@ def test_similarity():
     uids = features.get_relation_uids(-1, -1, 4)
     assert None == uids
 
+
+def test_get_relation_uids_from_history():
+    uids = features.get_relation_uids_from_history([1000, 1001, 1002])
 
 def test_type_similarity():
     # model

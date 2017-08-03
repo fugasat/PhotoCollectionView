@@ -100,6 +100,8 @@ class Features:
         pre_uid = int(pre_uid)
         uid = int(uid)
 
+        #
+
         if not self.exists(uid):
             return None
 
@@ -139,15 +141,17 @@ class Features:
                 df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
                 df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 0.1
 
-            # 正規化(z-score)
-            # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
-            # 正規化(min-max)
-            f_max = df_feature.max().max()
-            f_min = df_feature.min().min()
-            df_feature = (df_feature - f_min) / (f_max - f_min)
+        if self.exists(pre_uid):
+            type_similarity = self.get_type_similarity(uid, pre_uid)
 
-            if self.exists(pre_uid):
-                type_similarity = self.get_type_similarity(uid, pre_uid)
+        #
+
+        # 正規化(z-score)
+        # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
+        # 正規化(min-max)
+        f_max = df_feature.max().max()
+        f_min = df_feature.min().min()
+        df_feature = (df_feature - f_min) / (f_max - f_min)
 
         # 各写真ごとのコサイン類似度を計算
         array = df_feature.as_matrix()
@@ -169,6 +173,72 @@ class Features:
         }
         return result
 
+    def get_relation_uids_from_history(self, uids):
+        if uids is None:
+            return None
+
+        uid = int(uids[0])
+        type_similarity = self.get_type_similarity_from_history(uids)
+        print(type_similarity)
+
+        #
+
+        if not self.exists(uid):
+            return None
+
+        df_feature = self.df.loc[:, "正面":]
+        df_feature = df_feature.drop("main_model", axis=1)
+
+        # 特定の特徴量を強調させる
+        current_value = self.get_model_values(uid)[0]
+        relation_info = self.get_model_values(uid)
+        df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * type_similarity[Const.type_model()]
+        df_feature[current_value] = df_feature[current_value] * type_similarity[Const.type_model()]
+        df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * type_similarity[Const.type_angle()]
+        df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * type_similarity[Const.type_area()]
+        df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * type_similarity[Const.type_scene()]
+
+        # 正規化(z-score)
+        # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
+        # 正規化(min-max)
+        f_max = df_feature.max().max()
+        f_min = df_feature.min().min()
+        df_feature = (df_feature - f_min) / (f_max - f_min)
+
+        # 各写真ごとのコサイン類似度を計算
+        array = df_feature.as_matrix()
+        cs_array = cosine_similarity(array, array)
+
+        # uidの配列をrow/column名にして"コサイン類似度"DataFrameを生成
+        row_uid = self.df["ID"].as_matrix()
+        df_cs = pd.DataFrame(cs_array, index=row_uid, columns=row_uid)
+
+        # ターゲットの行indexを取得
+        # (ターゲットをdrop、類似度を降順でソート)
+        row_cs_target = df_cs.loc[uid].drop(uid)
+        row_cs_target = row_cs_target.sort_values(ascending=False)
+        result = {
+            "info": relation_info,
+            "uids": row_cs_target.index.values,
+            "similarity": row_cs_target.values,
+            "type_similarity": type_similarity,
+        }
+        return result
+
+    def get_type_similarity_from_history(self, uids):
+        type_similarity = self.create_type_dict(default_value=1)
+        if (uids is None) or (len(uids) < 2):
+            return type_similarity
+
+        for i in range(len(uids) - 2, -1, -1):
+            pre_uid = int(uids[i + 1])
+            uid = int(uids[i])
+            similarity = self.get_type_similarity(pre_uid, uid)
+            for key in similarity.keys():
+                type_similarity[key] = (type_similarity[key] + similarity[key]) / 2
+
+        return type_similarity
+
     def get_type_similarity(self, uid1, uid2):
         angle1 = np.array(list(self.get_angle(uid1).values())).reshape(1, -1)
         angle2 = np.array(list(self.get_angle(uid2).values())).reshape(1, -1)
@@ -186,13 +256,20 @@ class Features:
         area2 = np.array(list(self.get_area(uid2).values())).reshape(1, -1)
         cs_area = cosine_similarity(area1, area2)[0][0]
 
-        result = {
-            Const.type_angle(): cs_angle,
-            Const.type_scene(): cs_scene,
-            Const.type_area(): cs_area,
-            Const.type_model(): cs_model,
-        }
+        result = self.create_type_dict()
+        result[Const.type_angle()] =  cs_angle
+        result[Const.type_scene()] =  cs_scene
+        result[Const.type_area()] =  cs_area
+        result[Const.type_model()] =  cs_model
         return result
+
+    def create_type_dict(self, default_value=0):
+        return {
+            Const.type_angle(): default_value,
+            Const.type_scene(): default_value,
+            Const.type_area(): default_value,
+            Const.type_model(): default_value,
+        }
 
     def exists(self, uid):
         row = self.df[self.df["ID"] == uid].values

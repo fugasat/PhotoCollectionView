@@ -1,3 +1,4 @@
+const history_size = 5;
 const relation_param = [
     {relation_type: 0, index: 0},
     {relation_type: 5, index: 1},
@@ -26,6 +27,9 @@ $(function(){
 
 function update_view_history(photo_uid) {
     view_history.unshift(photo_uid);
+    if (view_history.length > history_size) {
+        view_history.pop();
+    }
     console.log(view_history);
 }
 
@@ -64,9 +68,14 @@ function relation_photo_clicked(element) {
 function initialize_relation_image() {
     let pre_photo_uid = $("#modal_thumbnail").data("pre-photo-uid");
     let photo_uid = $("#modal_thumbnail").data("photo-uid");
+    let history_value = view_history.join('x');
+
+    //
+    // main relation
+    //
 
     $.ajax({
-        url: "relation/" + pre_photo_uid + "/" + photo_uid + "/0/",
+        url: "relation/" + history_value + "/",
     }).done(function(data){
         let relation = data.relation;
         let similarity = data.similarity;
@@ -76,7 +85,6 @@ function initialize_relation_image() {
                 relation[i], similarity[i],
                 "#main_relation_" + i,
                 "#main_relation_info_" + i);
-
         }
         if (type_similarity) {
             for (key in type_similarity) {
@@ -90,6 +98,10 @@ function initialize_relation_image() {
     }).fail(function(data){
         console.log('error!!! : ' + data);
     });
+
+    //
+    // sub relation
+    //
 
     var photo_info = "ID=" + photo_uid;
     for (let index in relation_param) {
