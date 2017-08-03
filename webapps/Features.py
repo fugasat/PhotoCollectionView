@@ -96,22 +96,26 @@ class Features:
                 list_values[0], list_values[index] = list_values[index], list_values[0]
         return list_values
 
+    def create_df_feature(self):
+        df_feature = self.df.loc[:, "正面":]
+        df_feature = df_feature.drop("main_model", axis=1)
+        return df_feature
+
     def get_relation_uids(self, pre_uid, uid, relation_type=None):
         pre_uid = int(pre_uid)
         uid = int(uid)
-
-        #
-
         if not self.exists(uid):
             return None
 
-        df_feature = self.df.loc[:, "正面":]
-        df_feature = df_feature.drop("main_model", axis=1)
+        type_similarity = None
+        if self.exists(pre_uid):
+            type_similarity = self.get_type_similarity(uid, pre_uid)
+
+        df_feature = self.create_df_feature()
 
         # 特定の特徴量を強調させる
         relation_type = int(relation_type)
         relation_info = ""
-        type_similarity = None
         if relation_type is not None:
             rtype = Const.type_model()
             if relation_type == Const.type_model():
@@ -141,63 +145,32 @@ class Features:
                 df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * 2
                 df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * 0.1
 
-        if self.exists(pre_uid):
-            type_similarity = self.get_type_similarity(uid, pre_uid)
-
-        #
-
-        # 正規化(z-score)
-        # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
-        # 正規化(min-max)
-        f_max = df_feature.max().max()
-        f_min = df_feature.min().min()
-        df_feature = (df_feature - f_min) / (f_max - f_min)
-
-        # 各写真ごとのコサイン類似度を計算
-        array = df_feature.as_matrix()
-        cs_array = cosine_similarity(array, array)
-
-        # uidの配列をrow/column名にして"コサイン類似度"DataFrameを生成
-        row_uid = self.df["ID"].as_matrix()
-        df_cs = pd.DataFrame(cs_array, index=row_uid, columns=row_uid)
-
-        # ターゲットの行indexを取得
-        # (ターゲットをdrop、類似度を降順でソート)
-        row_cs_target = df_cs.loc[uid].drop(uid)
-        row_cs_target = row_cs_target.sort_values(ascending=False)
-        result = {
-            "info": relation_info,
-            "uids": row_cs_target.index.values,
-            "similarity": row_cs_target.values,
-            "type_similarity": type_similarity,
-        }
-        return result
+        return self.get_relation(df_feature, uid, relation_info, type_similarity)
 
     def get_relation_uids_from_history(self, uids):
         if uids is None:
             return None
-
         uid = int(uids[0])
-        type_similarity = self.get_type_similarity_from_history(uids)
-        print(type_similarity)
-
-        #
-
         if not self.exists(uid):
             return None
 
-        df_feature = self.df.loc[:, "正面":]
-        df_feature = df_feature.drop("main_model", axis=1)
+        type_similarity = self.get_type_similarity_from_history(uids)
+        print(type_similarity)
+
+        df_feature = self.create_df_feature()
 
         # 特定の特徴量を強調させる
         current_value = self.get_model_values(uid)[0]
-        relation_info = self.get_model_values(uid)
+        relation_info = ""
         df_feature.iloc[:, 31:] = df_feature.iloc[:, 31:] * type_similarity[Const.type_model()]
         df_feature[current_value] = df_feature[current_value] * type_similarity[Const.type_model()]
         df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * type_similarity[Const.type_angle()]
         df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * type_similarity[Const.type_area()]
         df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * type_similarity[Const.type_scene()]
 
+        return self.get_relation(df_feature, uid, relation_info, type_similarity)
+
+    def get_relation(self, df_feature, uid, relation_info, type_similarity):
         # 正規化(z-score)
         # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
         # 正規化(min-max)
@@ -224,6 +197,8 @@ class Features:
             "type_similarity": type_similarity,
         }
         return result
+
+
 
     def get_type_similarity_from_history(self, uids):
         type_similarity = self.create_type_dict(default_value=1)
