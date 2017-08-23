@@ -8,7 +8,7 @@ from .models import Photo
 
 
 def index(request):
-    photo_list = Photo.objects.order_by('uid')
+    photo_list = Photo.objects.order_by('-uid')
     context = {'photo_list': photo_list}
     return render(request, 'index.html', context)
 
