@@ -19,6 +19,7 @@
 
 <script src="{% static 'lib/js/jquery-3.2.1.min.js' %}"></script>
 <script src="{% static 'lib/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'lib/js/jquery.lazy.min.js' %}"></script>
 <script src="{% static '/js/photo.js' %}"></script>
 
 <div class="container bg-info">
@@ -28,7 +29,7 @@
                 <div class="col-sm-3 bg-info">
                     <div class="row">
                         <div class="photo_contents">
-                            <a href="#" class="cell_photo thumbnail photo_wrapper" data-pre-photo-uid="0" data-photo-uid="{{photo.uid}}" data-file-path="{{photo.file_path}}" style="background-image: url('{% static 'photos' %}/{{photo.file_path}}')">
+                            <a href="#" class="cell_photo thumbnail photo_wrapper" data-pre-photo-uid="0" data-photo-uid="{{photo.uid}}" data-file-path="{{photo.file_path}}" data-src="{% static 'photos' %}/{{photo.file_path}}">
                                 <div class="photo_info">
                                     <div class="col-sm-3">
                                         <span>

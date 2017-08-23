@@ -11,6 +11,8 @@ var view_history = [];
 var current_type_similarity = {};
 
 $(function(){
+    $('.thumbnail').Lazy();
+
     $(".cell_photo").click(function(){
         let photo_uid = $(this).data("photo-uid");
         let file_path = $(this).data("file-path");
