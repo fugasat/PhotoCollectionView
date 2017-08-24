@@ -22,6 +22,11 @@ $(function(){
         return false;
     });
 
+    $("#modal_body_photo").click(function(){
+        let photo_uid = $("#modal_thumbnail").data("photo-uid");
+        window.open("/webapps/" + photo_uid);
+    });
+
     $('#modal_thumbnail').on('shown.bs.modal', function (event) {
         initialize_relation_image();
 	});
