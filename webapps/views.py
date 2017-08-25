@@ -6,7 +6,6 @@ from django.urls import reverse
 from .models import Photo
 
 
-
 def index(request):
     photo_list = Photo.objects.order_by('-uid')
     context = {'photo_list': photo_list}
@@ -19,3 +18,11 @@ def detail(request, photo_uid):
     except Photo.DoesNotExist:
         raise Http404("Photo does not exist")
     return render(request, 'detail.html', {'photo': photo})
+
+
+def relation(request, photo_uid):
+    try:
+        photo = Photo.objects.get(uid=photo_uid)
+    except Photo.DoesNotExist:
+        raise Http404("Photo does not exist")
+    return render(request, 'relation.html', {'photo': photo})

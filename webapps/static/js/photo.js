@@ -19,6 +19,10 @@ $(function(){
         update_view_history(photo_uid);
         create_modal_body(0, photo_uid, file_path);
         $("#modal_thumbnail").modal("show");
+        /*
+        let photo_uid = $("#modal_thumbnail").data("photo-uid");
+        window.open("/webapps/" + photo_uid);
+        */
         return false;
     });
 
@@ -82,7 +86,7 @@ function initialize_relation_image() {
     //
 
     $.ajax({
-        url: "relation/" + history_value + "/",
+        url: "api/relation/" + history_value + "/",
     }).done(function(data){
         let relation = data.relation;
         let similarity = data.similarity;
@@ -114,7 +118,7 @@ function initialize_relation_image() {
     for (let index in relation_param) {
         let param = relation_param[index];
         $.ajax({
-            url: "relation/" + pre_photo_uid + "/" + photo_uid + "/" + param.relation_type + "/" ,
+            url: "api/relation/" + pre_photo_uid + "/" + photo_uid + "/" + param.relation_type + "/" ,
         }).done(function(data){
             let relation = data.relation;
             let similarity = data.similarity;
