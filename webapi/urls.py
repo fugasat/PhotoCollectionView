@@ -4,6 +4,9 @@ from webapi import views
 
 app_name = 'webapi'
 urlpatterns = [
+    url(r'^relation/(?P<uid>[0-9]+)/(?P<pre_uid>[0-9]+)/(?P<relation_type>[0-9]+)/$', views.get_relation),
+    url(r'^relation/(?P<uid>[0-9]+)/(?P<history>[0-9x]+)/$', views.get_relation_from_history),
+
     url(r'^api/relation/(?P<pre_uid>[0-9]+)/(?P<uid>[0-9]+)/(?P<relation_type>[0-9]+)/$', views.get_relation),
     url(r'^api/relation/(?P<history>[0-9x]+)/$', views.get_relation_from_history),
 ]

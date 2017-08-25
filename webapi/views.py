@@ -47,7 +47,7 @@ def get_relation(request, pre_uid, uid, relation_type=None):
 
 
 @api_view(['GET'])
-def get_relation_from_history(request, history):
+def get_relation_from_history(request, uid, history):
     if request.method == 'GET':
         uids = history.split("x")
         relation = __features.get_relation_uids_from_history(uids)
