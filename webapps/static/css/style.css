@@ -63,7 +63,7 @@ div {
 
 /* main relation */
 .modal_thumbnail_main_row {
-    height: 50%; /* 選択画像の表示領域の半分の高さで表示 */
+    height: 256px;
 }
 
 /* sub relation */

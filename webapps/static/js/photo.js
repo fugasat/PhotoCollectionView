@@ -13,18 +13,16 @@ var current_type_similarity = {};
 $(function(){
     $('.thumbnail').Lazy();
 
+    /*
     $(".cell_photo").click(function(){
         let photo_uid = $(this).data("photo-uid");
         let file_path = $(this).data("file-path");
         update_view_history(photo_uid);
         create_modal_body(0, photo_uid, file_path);
         $("#modal_thumbnail").modal("show");
-        /*
-        let photo_uid = $("#modal_thumbnail").data("photo-uid");
-        window.open("/webapps/" + photo_uid);
-        */
         return false;
     });
+    */
 
     $("#modal_body_photo").click(function(){
         let photo_uid = $("#modal_thumbnail").data("photo-uid");
