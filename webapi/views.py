@@ -21,7 +21,7 @@ def response_relation(relation):
     if relation is None:
         raise Http404
 
-    uids = relation["uids"][:10]
+    uids = relation["uids"][:30]
     datas = Photo.objects.filter(uid__in=uids).values()
     # 正しい順番でソート
     data = []
@@ -32,7 +32,7 @@ def response_relation(relation):
     result = {}
     result["info"] = ",".join(relation["info"])
     result["relation"] = data
-    result["similarity"] = relation["similarity"][:10]
+    result["similarity"] = relation["similarity"][:30]
     result["type_similarity"] = relation["type_similarity"]
     return Response(result)
 

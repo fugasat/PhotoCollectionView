@@ -37,10 +37,6 @@ $(function(){
         let photo_uid = $("#modal_thumbnail").data("photo-uid");
         window.open("/webapps/" + photo_uid);
     });
-
-    $('#modal_thumbnail').on('shown.bs.modal', function (event) {
-        initialize_relation_image();
-	});
 });
 
 function update_view_history(photo_uid) {
@@ -61,12 +57,7 @@ function create_modal_body(pre_photo_uid, photo_uid, file_path) {
 
     $('#modal_body_photo').css('background-image', 'url(' + img_url + ')');
 
-    create_main_relation_table("#modal_body_photo_main_relation");
-    create_sub_relation_table(0);
-    create_sub_relation_table(1);
-    create_sub_relation_table(2);
-    create_sub_relation_table(3);
-    create_sub_relation_table(4);
+    create_main_relation_table("#modal_body_photo_main_relation", "#modal_body_photo_main_relation2");
 
     $(".cell_relation_photo").click(function(){
         relation_photo_clicked(this);
@@ -98,7 +89,7 @@ function initialize_relation_image() {
         let relation = data.relation;
         let similarity = data.similarity;
         let type_similarity = data.type_similarity;
-        for (let i=0; i < 6; i++) {
+        for (let i=0; i < 14; i++) {
             initialize_relation_cell(
                 relation[i], similarity[i],
                 "#main_relation_" + i,
@@ -113,6 +104,8 @@ function initialize_relation_image() {
                 }
             }
         }
+        $('body').animate({scrollTop: 0}, 500, 'swing');
+
     }).fail(function(data){
         console.log('error!!! : ' + data);
     });
@@ -121,6 +114,7 @@ function initialize_relation_image() {
     // sub relation
     //
 
+    /*
     var photo_info = "ID=" + photo_uid;
     for (let index in relation_param) {
         let param = relation_param[index];
@@ -148,6 +142,7 @@ function initialize_relation_image() {
             console.log('error!!! : ' + data);
         });
     }
+    */
 }
 
 function initialize_relation_cell(item, similarity, element_cell_id, element_info_id) {
@@ -163,7 +158,7 @@ function initialize_relation_cell(item, similarity, element_cell_id, element_inf
 //
 // Main relation
 //
-function create_main_relation_table(parent_id) {
+function create_main_relation_table(parent_id, parent_id2) {
     $(parent_id).empty();
     for (let i = 0; i < 6; i++) {
         let element_cell_id = "main_relation_" + i;
@@ -175,6 +170,20 @@ function create_main_relation_table(parent_id) {
                 "</a>" +
             "</div>";
         $(parent_id).append(item);
+    }
+    $(parent_id2).empty();
+    for (let i = 6; i < 14; i++) {
+        let element_cell_id = "main_relation_" + i;
+        let element_info_id = "main_relation_info_" + i;
+        let item =
+            "<div class='col-sm-3 bg-info'>" +
+                "<div class='photo_contents'>" +
+                    "<a id='" + element_cell_id + "' href='#' class='cell_relation_photo thumbnail photo_wrapper'>" +
+                        "<div id='" + element_info_id + "' class='photo_info relation'></div>" +
+                    "</a>" +
+                "</div>" +
+            "</div>"
+        $(parent_id2).append(item);
     }
 }
 
