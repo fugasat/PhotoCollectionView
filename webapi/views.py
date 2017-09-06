@@ -17,38 +17,39 @@ class PhotoViewSet(viewsets.ModelViewSet):
     serializer_class = PhotoSerializer
 
 
-def response_relation(relation):
-    if relation is None:
+def response_relation(relations):
+    if relations is None:
         raise Http404
 
-    uids = relation["uids"][:30]
-    datas = Photo.objects.filter(uid__in=uids).values()
-    # 正しい順番でソート
-    data = []
-    for s_uid in uids:
-        for item in datas:
-            if item["uid"] == s_uid:
-                data.append(item)
     result = {}
-    result["info"] = ",".join(relation["info"])
-    result["relation"] = data
-    result["similarity"] = relation["similarity"][:30]
-    result["type_similarity"] = relation["type_similarity"]
+    for key in relations.keys():
+        relation = relations[key]
+
+        uids = relation["uids"][:30]
+        datas = Photo.objects.filter(uid__in=uids).values()
+        data = []
+        for s_uid in uids:
+            for item in datas:
+                if item["uid"] == s_uid:
+                    data.append(item)
+
+        info = None
+        if relation["info"] is not None:
+            info = ",".join(relation["info"])
+
+        result[key] = {
+            "info": info,
+            "relation": data,
+            "similarity": relation["similarity"][:30],
+            "type_similarity": relation["type_similarity"]
+        }
     return Response(result)
 
 
 @api_view(['GET'])
-def get_relation(request, pre_uid, uid, relation_type=None):
+def get_relation(request, uid, relation_type=None, history=None):
     uid = int(uid)
     if request.method == 'GET':
-        # 類似度が高いデータを6個取得
-        relation = __features.get_relation_uids(pre_uid, uid, relation_type)
-        return response_relation(relation)
-
-
-@api_view(['GET'])
-def get_relation_from_history(request, uid, history):
-    if request.method == 'GET':
         uids = history.split("x")
-        relation = __features.get_relation_uids_from_history(uids)
-        return response_relation(relation)
+        relations = __features.get_relation(uid, uids)
+        return response_relation(relations)

@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 from .models import Photo
+from webapps.const import Const
 
 
 def index(request):
@@ -12,17 +13,17 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def detail(request, photo_uid):
+def detail(request, uid):
     try:
-        photo = Photo.objects.get(uid=photo_uid)
+        photo = Photo.objects.get(uid=uid)
     except Photo.DoesNotExist:
         raise Http404("Photo does not exist")
     return render(request, 'detail.html', {'photo': photo})
 
 
-def relation(request, photo_uid):
+def relation(request, uid, relation_type=Const.type_total()):
     try:
-        photo = Photo.objects.get(uid=photo_uid)
+        photo = Photo.objects.get(uid=uid)
     except Photo.DoesNotExist:
         raise Http404("Photo does not exist")
-    return render(request, 'relation.html', {'photo': photo})
+    return render(request, 'relation.html', {'photo': photo, 'relation_type': relation_type})

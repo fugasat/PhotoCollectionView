@@ -7,6 +7,7 @@ urlpatterns = [
     # ex: /webapps/
     url(r'^$', views.index, name='index'),
     # ex: /webapps/5/
-    url(r'^(?P<photo_uid>[0-9]+)/$', views.detail, name='detail'),
-    url(r'^relation/(?P<photo_uid>[0-9]+)/$', views.relation, name='relation'),
+    url(r'^(?P<uid>[0-9]+)/$', views.detail, name='detail'),
+    url(r'^relation/(?P<uid>[0-9]+)/$', views.relation, name='relation'),
+    url(r'^relation/(?P<uid>[0-9]+)/(?P<relation_type>[0-9]+)/$', views.relation, name='relation'),
 ]

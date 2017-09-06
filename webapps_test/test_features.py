@@ -1,6 +1,7 @@
 # coding: utf-8
 from unittest import TestCase
 from webapps.features import Features
+from webapps.const import Const
 
 features = Features("webapps_test/test.csv")
 
@@ -82,16 +83,27 @@ def test_get_model_values():
 
 
 def test_get_relation_uids():
-    uids = features.get_relation_uids(1000, 1395, -1)
-    uids = features.get_relation_uids(1000, 1395, 0)
-    uids = features.get_relation_uids(1000, 1395, 4)
-
-    uids = features.get_relation_uids(-1, 1395, 4)
+    uids = features.get_relation_uids(1395, -1)
     assert None == uids["type_similarity"]
-    uids = features.get_relation_uids(1000, -1, 4)
+    uids = features.get_relation_uids(1395, 0)
+    assert None == uids["type_similarity"]
+    uids = features.get_relation_uids(1395, 4)
+    assert None == uids["type_similarity"]
+    uids = features.get_relation_uids(-1, 4)
     assert None == uids
-    uids = features.get_relation_uids(-1, -1, 4)
-    assert None == uids
+
+
+def test_get_relation():
+    relation = features.get_relation(1000, [1001, 1002, 1003, 1004])
+    assert 5 == len(relation.keys())
+    assert "info" in relation[Const.type_total()]
+    assert "uids" in relation[Const.type_total()]
+    assert "similarity" in relation[Const.type_total()]
+    assert "type_similarity" in relation[Const.type_total()]
+    assert "info" in relation[Const.type_scene()]
+    assert "uids" in relation[Const.type_scene()]
+    assert "similarity" in relation[Const.type_scene()]
+    assert "type_similarity" in relation[Const.type_scene()]
 
 
 def test_get_relation_uids_from_history():

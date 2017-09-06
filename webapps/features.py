@@ -101,15 +101,20 @@ class Features:
         df_feature = df_feature.drop("main_model", axis=1)
         return df_feature
 
-    def get_relation_uids(self, pre_uid, uid, relation_type=None):
-        pre_uid = int(pre_uid)
+    def get_relation(self, uid, history):
+        result = {}
+        for relation_type in Const.all_type():
+            if relation_type == Const.type_total():
+                relation = self.get_relation_uids_from_history(history)
+            else:
+                relation = self.get_relation_uids(uid, relation_type)
+            result[relation_type] = relation
+        return result
+
+    def get_relation_uids(self, uid, relation_type=None):
         uid = int(uid)
         if not self.exists(uid):
             return None
-
-        type_similarity = None
-        if self.exists(pre_uid):
-            type_similarity = self.get_type_similarity(uid, pre_uid)
 
         df_feature = self.create_df_feature()
 
@@ -117,7 +122,6 @@ class Features:
         relation_type = int(relation_type)
         relation_info = ""
         if relation_type is not None:
-            rtype = Const.type_model()
             if relation_type == Const.type_model():
                 current_value = self.get_model_values(uid)[0]
                 relation_info = self.get_model_values(uid)
@@ -148,7 +152,7 @@ class Features:
                 df_feature.loc[:, "正面":"曲線"] = df_feature.loc[:, "正面":"曲線"] * 0
                 df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * 0
 
-        return self.get_relation(df_feature, uid, relation_info, type_similarity)
+        return self.get_relation_data(df_feature, uid, relation_info, None)
 
     def get_relation_uids_from_history(self, uids):
         if uids is None:
@@ -171,9 +175,9 @@ class Features:
         df_feature.loc[:, "北海道":"九州"] = df_feature.loc[:, "北海道":"九州"] * type_similarity[Const.type_area()]
         df_feature.loc[:, "森林":"踏切"] = df_feature.loc[:, "森林":"踏切"] * type_similarity[Const.type_scene()]
 
-        return self.get_relation(df_feature, uid, relation_info, type_similarity)
+        return self.get_relation_data(df_feature, uid, relation_info, type_similarity)
 
-    def get_relation(self, df_feature, uid, relation_info, type_similarity):
+    def get_relation_data(self, df_feature, uid, relation_info, type_similarity):
         # 正規化(z-score)
         # df_feature = (df_feature - df_feature.mean()) / df_feature.std()
         # 正規化(min-max)
@@ -200,8 +204,6 @@ class Features:
             "type_similarity": type_similarity,
         }
         return result
-
-
 
     def get_type_similarity_from_history(self, uids):
         type_similarity = self.create_type_dict(default_value=1)
