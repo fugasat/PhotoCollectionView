@@ -10,24 +10,37 @@ const relation_param = [
 var view_history = [];
 var current_type_similarity = {};
 var current_relation_type = 0;
+var relation_data = {};
 
 $(function(){
     $('.thumbnail').Lazy();
 
-    create_relation_view();
-
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        let activated_tab = e.target // activated tab
-        let previous_tab = e.relatedTarget // previous tab
-        current_relation_type = $(activated_tab).data("relation-type");
+    let photo_uid = $("#modal_thumbnail").data("photo-uid");
+    let history_value = view_history.join('x');
+    current_relation_type = $("#modal_thumbnail").data("relation-type");
+    history_value = photo_uid;
+    $.ajax({
+        url: history_value + "/",
+    }).done(function(data){
+        relation_data = data;
         create_relation_view();
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            let activated_tab = e.target // activated tab
+            let previous_tab = e.relatedTarget // previous tab
+            current_relation_type = $(activated_tab).data("relation-type");
+            create_relation_view();
+        });
+    }).fail(function(data){
+        console.log('error!!! : ' + data);
     });
+
 });
 
 function create_relation_view() {
     let photo_uid = $("#modal_thumbnail").data("photo-uid");
     let file_path = $("#modal_thumbnail").data("file-path");
-    update_view_history(photo_uid);
+    //update_view_history(photo_uid);
     create_modal_body(0, photo_uid, file_path);
     initialize_relation_image(photo_uid);
 }
@@ -47,7 +60,7 @@ function create_modal_body(pre_photo_uid, photo_uid, file_path) {
     $("#modal_thumbnail").data("pre-photo-uid", pre_photo_uid);
     $("#modal_thumbnail").data("photo-uid", photo_uid);
 
-    create_main_relation_table("#modal_body_photo_main_relation", "#modal_body_photo_main_relation2");
+    create_main_relation_table("#modal_body_photo_main_relation");
     let img_url = '"/static/photos/' + file_path + '"'
     $('#modal_body_photo').css('background-image', 'url(' + img_url + ')');
 
@@ -62,113 +75,33 @@ function create_modal_body(pre_photo_uid, photo_uid, file_path) {
 }
 
 function relation_photo_clicked(element) {
-    let pre_photo_uid = $("#modal_thumbnail").data("photo-uid");
     let photo_uid = $(element).data("photo-uid");
-    let file_path = $(element).data("file-path");
-    console.log("relation clicked:" + pre_photo_uid + "=>" + photo_uid);
-    update_view_history(photo_uid);
-    create_modal_body(pre_photo_uid, photo_uid, file_path);
-    initialize_relation_image(photo_uid);
+    window.location.href = "/webapps/relation/" + photo_uid + "/" + current_relation_type + "/";
 }
 
 function initialize_relation_image(photo_uid) {
-    console.log(photo_uid);
-    //let pre_photo_uid = $("#modal_thumbnail").data("pre-photo-uid");
-    //let photo_uid = $("#modal_thumbnail").data("photo-uid");
-    let history_value = view_history.join('x');
+    data = relation_data[current_relation_type];
+    let relation = data.relation;
+    let similarity = data.similarity;
+    for (let i=0; i < 19; i++) {
+        initialize_relation_cell(
+            relation[i], similarity[i],
+            "#main_relation_" + i,
+            "#main_relation_info_" + i);
+    }
 
     if (current_relation_type == 0) {
-        $.ajax({
-            url: history_value + "/",
-        }).done(function(data){
-            let relation = data.relation;
-            let similarity = data.similarity;
-            let type_similarity = data.type_similarity;
-            for (let i=0; i < 19; i++) {
-                initialize_relation_cell(
-                    relation[i], similarity[i],
-                    "#main_relation_" + i,
-                    "#main_relation_info_" + i);
-            }
-            if (type_similarity) {
-                for (key in type_similarity) {
-                    if (key in current_type_similarity) {
-                        current_type_similarity[key] = (current_type_similarity[key] + type_similarity[key]) / 2;
-                    } else {
-                        current_type_similarity[key] = type_similarity[key];
-                    }
+        let type_similarity = data.type_similarity;
+        if (type_similarity) {
+            for (key in type_similarity) {
+                if (key in current_type_similarity) {
+                    current_type_similarity[key] = (current_type_similarity[key] + type_similarity[key]) / 2;
+                } else {
+                    current_type_similarity[key] = type_similarity[key];
                 }
             }
-            $('body').animate({scrollTop: 0}, 500, 'swing');
-
-        }).fail(function(data){
-            console.log('error!!! : ' + data);
-        });
-
-    } else {
-        $.ajax({
-            url: photo_uid + "/" + current_relation_type + "/" ,
-        }).done(function(data){
-            let relation = data.relation;
-            let similarity = data.similarity;
-
-            /*
-            let s = Math.round(current_type_similarity[param.relation_type] * 100);
-            $("#info_tab" + param.index).text(data.info + " : " + s + "%");
-            if (photo_info.length > 0) {
-                photo_info += ",";
-            }
-            photo_info += data.info;
-            $("#modal_title").text(photo_info);
-            */
-
-            // 要リファクタリング
-            for (let i=0; i < 19; i++) {
-                initialize_relation_cell(
-                    relation[i], similarity[i],
-                    "#main_relation_" + i,
-                    "#main_relation_info_" + i);
-            }
-            $('body').animate({scrollTop: 0}, 500, 'swing');
-
-        }).fail(function(data){
-            console.log('error!!! : ' + data);
-        });
+        }
     }
-
-    //
-    // sub relation
-    //
-
-    /*
-    var photo_info = "ID=" + photo_uid;
-    for (let index in relation_param) {
-        let param = relation_param[index];
-        $.ajax({
-            url: pre_photo_uid + "/" + param.relation_type + "/" ,
-        }).done(function(data){
-            let relation = data.relation;
-            let similarity = data.similarity;
-            if (param.index > 0) {
-                let s = Math.round(current_type_similarity[param.relation_type] * 100);
-                $("#info_tab" + param.index).text(data.info + " : " + s + "%");
-                if (photo_info.length > 0) {
-                    photo_info += ",";
-                }
-                photo_info += data.info;
-                $("#modal_title").text(photo_info);
-            }
-            for (let i=0; i < relation.length; i++) {
-                initialize_relation_cell(
-                    relation[i], similarity[i],
-                    "#sub_relation_" + param.index + "_" + i,
-                    "#sub_relation_info_" + param.index + "_" + i);
-            }
-        }).fail(function(data){
-            console.log('error!!! : ' + data);
-        });
-    }
-    */
 }
 
 function initialize_relation_cell(item, similarity, element_cell_id, element_info_id) {
@@ -184,7 +117,7 @@ function initialize_relation_cell(item, similarity, element_cell_id, element_inf
 //
 // Main relation
 //
-function create_main_relation_table(parent_id, parent_id2) {
+function create_main_relation_table(parent_id) {
     $(parent_id).empty();
     let item =
         "<div class='col-sm-3 modal_thumbnail_main_row'>" +
@@ -204,22 +137,6 @@ function create_main_relation_table(parent_id, parent_id2) {
             "</div>";
         $(parent_id).append(item);
     }
-    /*
-    $(parent_id2).empty();
-    for (let i = 6; i < 14; i++) {
-        let element_cell_id = "main_relation_" + i;
-        let element_info_id = "main_relation_info_" + i;
-        let item =
-            "<div class='col-sm-3 bg-info'>" +
-                "<div class='photo_contents'>" +
-                    "<a id='" + element_cell_id + "' href='#' class='cell_relation_photo thumbnail photo_wrapper'>" +
-                        "<div id='" + element_info_id + "' class='photo_info relation'></div>" +
-                    "</a>" +
-                "</div>" +
-            "</div>"
-        $(parent_id2).append(item);
-    }
-    */
 }
 
 //

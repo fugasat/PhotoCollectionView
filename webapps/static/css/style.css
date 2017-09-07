@@ -19,6 +19,7 @@ div {
     position: relative;
 }
 .photo_info {
+    display: none;
     position: absolute;
     height: 28px;
     bottom: 0px;
