@@ -19,6 +19,13 @@ $(function(){
     let history_value = view_history.join('x');
     current_relation_type = $("#modal_thumbnail").data("relation-type");
     history_value = photo_uid;
+
+    relation_param.forEach(function(value) {
+        if (value.relation_type == current_relation_type) {
+            $('#type-tab a[href="#tab' + value.index + '"]').tab('show');
+        }
+    });
+
     $.ajax({
         url: history_value + "/",
     }).done(function(data){

@@ -25,13 +25,15 @@
 <div class="container bg-info" id="modal_thumbnail"
      data-photo-uid="{{photo.uid}}" data-file-path="{{photo.file_path}}" data-relation-type="{{relation_type}}">
     <div class="row">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab0" data-toggle="tab" data-relation-type="0">全体</a></li>
-            <li><a href="#tab1" data-toggle="tab" data-relation-type="5">車両</a></li>
-            <li><a href="#tab2" data-toggle="tab" data-relation-type="3">風景</a></li>
-            <li><a href="#tab3" data-toggle="tab" data-relation-type="1">視点</a></li>
-            <li><a href="#tab4" data-toggle="tab" data-relation-type="4">地域</a></li>
-        </ul>
+        <div id="type-tab">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab0" data-toggle="tab" data-relation-type="0">全体</a></li>
+                <li><a href="#tab1" data-toggle="tab" data-relation-type="5">車両</a></li>
+                <li><a href="#tab2" data-toggle="tab" data-relation-type="3">風景</a></li>
+                <li><a href="#tab3" data-toggle="tab" data-relation-type="1">視点</a></li>
+                <li><a href="#tab4" data-toggle="tab" data-relation-type="4">地域</a></li>
+            </ul>
+        </div>
     </div>
     <div class="row" id="modal_body_photo_main_relation"></div>
 </div>
