@@ -1,16 +1,17 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import Http404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 from .models import Photo
 from webapps.const import Const
+import random
 
 
 def index(request):
     photo_list = Photo.objects.order_by('-uid')
-    context = {'photo_list': photo_list}
-    return render(request, 'index.html', context)
+    photo = random.choice(photo_list)
+    return redirect("/" + str(photo.uid) + "/0/")
 
 
 def detail(request, uid):
@@ -21,7 +22,7 @@ def detail(request, uid):
     return render(request, 'detail.html', {'photo': photo})
 
 
-def relation(request, uid, relation_type=Const.type_total()):
+def relation(request, uid, relation_type):
     try:
         photo = Photo.objects.get(uid=uid)
     except Photo.DoesNotExist:

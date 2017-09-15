@@ -18,8 +18,8 @@ from django.contrib import admin
 from webapi import urls as webapi_urls
 
 urlpatterns = [
-    url(r'^webapps/', include('webapps.urls')),
-    url(r'^webapps/', include(webapi_urls)),
-    url(r'^webapps/', include(webapi_urls.router.urls)),
+    url(r'^', include('webapps.urls')),
+    url(r'^', include(webapi_urls)),
+    url(r'^', include(webapi_urls.router.urls)),
     url(r'^admin/', admin.site.urls),
 ]

@@ -73,7 +73,7 @@ function create_modal_body(pre_photo_uid, photo_uid, file_path) {
 
     $("#modal_body_photo").click(function(){
         let photo_uid = $("#modal_thumbnail").data("photo-uid");
-        window.open("/webapps/" + photo_uid);
+        window.open("/" + photo_uid);
     });
     $(".cell_relation_photo").click(function(){
         relation_photo_clicked(this);
@@ -83,7 +83,7 @@ function create_modal_body(pre_photo_uid, photo_uid, file_path) {
 
 function relation_photo_clicked(element) {
     let photo_uid = $(element).data("photo-uid");
-    window.location.href = "/webapps/relation/" + photo_uid + "/" + current_relation_type + "/";
+    window.location.href = "/" + photo_uid + "/" + current_relation_type + "/";
 }
 
 function initialize_relation_image(photo_uid) {
