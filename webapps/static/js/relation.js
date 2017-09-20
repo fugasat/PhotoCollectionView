@@ -4,7 +4,7 @@ const relation_param = [
     {relation_type: 5, index: 1},
     {relation_type: 3, index: 2},
     {relation_type: 1, index: 3},
-    {relation_type: 4, index: 4},
+    // {relation_type: 4, index: 4},
 ];
 
 var view_history = [];
